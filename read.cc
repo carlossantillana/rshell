@@ -7,10 +7,23 @@ Read::Read(){}
 Read::Read(string i) : input(i) {}
 
 void Read::par(){
-    tokenizer<> tok(input);
-    for(tokenizer<>::iterator begin=tok.begin(); begin!=tok.end();++begin){
-        commandList.push(*begin);
-    }
+  string parse;
+  typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+    boost::char_separator<char> sep(";", "#");//list of delimiters to check
+    tokenizer tokens(input, sep);//parses string to tokens
+    for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
+        //Itereates through tokens and puts them into queue
+        parse = *tok_iter;
+        if (parse == "#")
+          break;
+        else{
+          commandList.push(*tok_iter);
+          while (!commandList.empty()){
+            cout << commandList.front() << endl;
+            commandList.pop();
+          }
+        }
+  }
 }
 
 bool Read::execute(){
