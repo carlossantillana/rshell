@@ -6,7 +6,7 @@
 class Execute: public RShell
 {
 private:
-    string input; 
+    string input;
     string exe;
     string connectors;
 public:
