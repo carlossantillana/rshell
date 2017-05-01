@@ -13,15 +13,11 @@ void Read::par(){
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into queue
-        parse = *tok_iter;
-        if (parse == "#")
+        parse = *tok_iter;//pases token to string
+        if (parse == "#")//Breaks if #
           break;
         else{
-          commandList.push(*tok_iter);
-          while (!commandList.empty()){
-            cout << commandList.front() << endl;
-            commandList.pop();
-          }
+          commandList.push(parse);//pushes string to queue
         }
   }
 }
