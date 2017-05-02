@@ -20,7 +20,7 @@ void Read::par(){
           if (parse == "exit"){//exits while loop if exit is found
             found = true;
           }
-          commandList.push(parse);//pushes string to queue
+          commandList.push_back(parse);//pushes string to queue
         }
   }
 }
@@ -39,4 +39,7 @@ string Read::get_input(){
 
 void Read::set_input(string input){
   this->input = input;
+}
+vector Read::get_commands(){
+  return commandList;
 }

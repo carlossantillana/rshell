@@ -22,3 +22,10 @@ bool Execution::execute()// not done yet
   }
   return ret_val;
 }
+
+void Execution::set_commands(vector<string> commandList){
+  this->commandList = commandList;
+  for(unsigned int i=0; i <this->commandList.size(); i++){
+    cout << commandList.at(i) << endl;
+  }
+}
