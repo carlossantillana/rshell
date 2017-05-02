@@ -9,6 +9,7 @@ class Read: public RShell
 {
 private:
     string input;
+    bool found = false;
     //queue<RShell*> commandList;
     queue<string> commandList;
 public:
@@ -16,7 +17,8 @@ public:
     Read(string i);
     void par();
     void set_input(string input);
-    virtual bool execute(); //pure virtual
+    bool get_found();
+    virtual bool execute(); //pure virtua
     virtual string get_input(); //pure virtual
 };
 

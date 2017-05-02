@@ -10,16 +10,23 @@ void Read::par(){
   string parse;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(";", "#");//list of delimiters to check
-    tokenizer tokens(input, sep);//parses string to tokens
+    tokenizer tokens(input, s ep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into queue
         parse = *tok_iter;//pases token to string
         if (parse == "#")//Breaks if #
           break;
         else{
+          if (parse == "exit"){
+            found = true;
+          }
           commandList.push(parse);//pushes string to queue
         }
   }
+}
+
+bool found(){
+  return this->found;
 }
 
 bool Read::execute(){
