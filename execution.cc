@@ -29,3 +29,10 @@ void Execution::set_commands(vector<string> commandList){
     cout << commandList.at(i) << endl;
   }
 }
+
+
+string Execution::get_input(){
+  return "";
+}
+
+void Execution::print(){}

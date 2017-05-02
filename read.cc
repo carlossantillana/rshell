@@ -40,6 +40,6 @@ string Read::get_input(){
 void Read::set_input(string input){
   this->input = input;
 }
-vector Read::get_commands(){
+vector<string> Read::get_commands(){
   return commandList;
 }
