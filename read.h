@@ -9,7 +9,7 @@ class Read: public RShell
 {
 private:
     string input;
-    bool found = false;
+    bool found;
     //queue<RShell*> commandList;
     queue<string> commandList;
 public:
