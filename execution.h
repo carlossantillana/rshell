@@ -9,6 +9,7 @@ private:
     string input;
     string exe;
     string connectors;
+    pid_t pid;
 public:
     bool execute();
     string get_input();
