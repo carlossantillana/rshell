@@ -2,8 +2,7 @@
 #define __READ_H__
 
 #include "rshell.h"
-#include "execute.h"
-#include <queue>
+#include "execution.h"
 
 class Read: public RShell
 {
@@ -11,15 +10,16 @@ private:
     string input;
     bool found;
     //queue<RShell*> commandList;
-    queue<string> commandList;
+    vector<string> commandList;
 public:
     Read();
     Read(string i);
     void par();
     void set_input(string input);
     bool get_found();
-    virtual bool execute(); //pure virtua
-    virtual string get_input(); //pure virtual
+    virtual bool execute();
+    virtual string get_input();
+    vector<string> get_commands();
 };
 
 #endif

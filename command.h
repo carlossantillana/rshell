@@ -3,7 +3,7 @@
 
 #include<String>
 
-class Command: public Execute{
+class Command: public Execution{
     private:
         String execute, args, cmd, input;
     public:
