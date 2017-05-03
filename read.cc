@@ -9,7 +9,7 @@ Read::Read(string i) : input(i), found(false){}
 void Read::par(){
   string parse;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-    boost::char_separator<char> sep(" #;");//list of delimiters to check
+    boost::char_separator<char> sep(" ","#;");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into queue
