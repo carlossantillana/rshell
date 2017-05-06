@@ -12,7 +12,7 @@ void Read::par(){
     boost::char_separator<char> sep(" ","#;");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
-        //Itereates through tokens and puts them into queue
+        //Itereates through tokens and puts them into vector
         parse = *tok_iter;//pases token to string
         if (parse == "#")//Breaks if #
           break;
@@ -20,7 +20,7 @@ void Read::par(){
           if (parse == "exit"){//exits while loop if exit is found
             found = true;
           }
-          commandList.push_back(parse);//pushes string to queue
+          commandList.push_back(parse);//pushes string to vector
         }
   }
 }
