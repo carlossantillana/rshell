@@ -5,9 +5,11 @@
 
 class Command: public Execution{
     private:
-        String execute, args, cmd, input;
+        string Command
     public:
-        String get_input();
+        Command(string i)
+        :Command(i)
+        {}
         virtual bool execute();
         virtual string get_input();
 }

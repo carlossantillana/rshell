@@ -9,8 +9,8 @@ class Read: public RShell
 private:
     string input;
     bool found;
-    //queue<RShell*> commandList;
-    vector<string> commandList;
+    vector<RShell*> commandList;
+    //vector<string> commandList;
 public:
     Read();
     Read(string i);

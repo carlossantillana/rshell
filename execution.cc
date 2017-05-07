@@ -38,7 +38,7 @@ string Execution::get_input(){
 }
 
 void Execution::print(){}
-
+/*
 void Execution::make_tree(){
   for(unsigned int i=0; i <this->commandList.size(); i++){
     string currentCommand = commandList.at(i);
@@ -63,3 +63,4 @@ void Execution::make_tree(){
     }
    }
 }
+*/
