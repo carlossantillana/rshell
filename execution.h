@@ -17,6 +17,7 @@ public:
     string get_input();
     void set_commands(vector<string> commandList);
     void print();
+    void make_tree();
 };
 
 #endif

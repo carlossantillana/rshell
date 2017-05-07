@@ -9,11 +9,11 @@ private:
         RShell *left; //Operation left of connector
         RShell *right; //Operation right of connector
 public:
-        string get_input() //Returns input (needs testing)
-	{
+  string get_input() //Returns input (needs testing)
+{
 		string i;
 		return i;
-	}
+}
         virtual bool excute() = 0; //Pure virtual
 };
 

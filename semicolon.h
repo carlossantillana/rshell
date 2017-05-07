@@ -1,7 +1,7 @@
 #ifndef __SEMICOLON_H__
 #define __SEMICOLON_H__
 
-#include "constructor.h"
+#include "connector.h"
 
 class SemiColon : public Connector
 {
