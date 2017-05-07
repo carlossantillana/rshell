@@ -9,7 +9,7 @@ private:
     string input;
     string exe;
     string connectors;
-    vector<string> commandList;
+    vector<RShell*> commandList;
     pid_t pid;
 public:
     Execution();
