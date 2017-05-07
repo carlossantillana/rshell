@@ -9,20 +9,7 @@ private:
 	RShell *left;
 	RShell *right;
 public:
-	And(RShell *l, RShell *r) //Constructor
-	: left(l), right(r)
-	{}
-	bool execute() //Returns true if both sides are true
-	{
-		if(left->execute() && right->execute())
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-};
+	And(RShell *l, RShell *r); //Constructor
+	bool execute(); //Returns true if both sides are true
 
 #endif
