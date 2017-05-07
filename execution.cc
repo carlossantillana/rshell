@@ -61,6 +61,5 @@ void Execution::make_tree(){
       //do something else
 
     }
-
    }
 }
