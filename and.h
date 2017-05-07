@@ -9,10 +9,24 @@ private:
 	RShell *left;
 	RShell *right;
 public:
-	And(); //Defalut Constructor
-	And(RShell *l, RShell *r); //RShell Constructor
-	bool execute(); //Returns true if both sides are true
-	string get_input();
+	And(): {}; //Defalut Constructor
+	And(RShell *l, RShell *r): left(l), right(r)
+	{}; //RShell Constructor
+	bool execute(){
+	  if(left->execute() && right->execute())
+	  {
+	    return true;
+	  }
+	  else
+	  {
+	    return false;
+	  }
+	}; //Returns true if both sides are true
+
+	string get_input(){
+	  return "";
+	};
+
 };
 
 #endif
