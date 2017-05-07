@@ -12,5 +12,6 @@ class Command: public Execution{
         {}
         virtual bool execute();
         virtual string get_input();
-}
+};
+
 #endif
