@@ -6,9 +6,6 @@
 class Execution: public RShell
 {
 private:
-    string input;
-    string exe;
-    string connectors;
     vector<string> commandList;
     pid_t pid;
 public:
@@ -16,7 +13,6 @@ public:
     bool execute();
     string get_input();
     void set_commands(vector<string> commandList);
-    void print();
     void make_tree();
 };
 

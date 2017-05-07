@@ -10,5 +10,6 @@ class Command: public Execution{
         String get_input();
         virtual bool execute();
         virtual string get_input();
-}
+};
+
 #endif

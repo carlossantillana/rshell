@@ -9,11 +9,11 @@ private:
     RShell *left; //Operation left of connector
     RShell *right; //Operation right of connector
 public:
-    string get_input() //Returns input (needs testing)
+    string get_input() //Prevents abstraction, but does nothing
     {
-      string i;
-      return i;
+          return "String Theory";
     }
+
     virtual bool execute() = 0; //Pure virtual
 };
 
