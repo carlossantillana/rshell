@@ -14,7 +14,7 @@ public:
 		string i;
 		return i;
 }
-        virtual bool excute() = 0; //Pure virtual
+        virtual bool execute() = 0; //Pure virtual
 };
 
 #endif
