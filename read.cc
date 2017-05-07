@@ -3,6 +3,7 @@
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
+#include "command.h"
 using namespace boost;
 
 Read::Read(): found(false){}
@@ -10,33 +11,33 @@ Read::Read(): found(false){}
 Read::Read(string i) : input(i), found(false){}
 
 void Read::par(){
-  RShell* parse;
-  string input;
+  string tmp;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(" ","#;");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector
-        input = *tok_iter;
-        if (input == "#")//Breaks if #
+        tmp = *tok_iter;
+        cout << "input is " << tmp << endl;
+        if (tmp == "#")//Breaks if #
           break;
-        else if (input == "&&"){
+        else if (tmp == "&&"){
           And* anding = new And;
           commandList.push_back(anding);
         }
-        else if (input == ";"){
+        else if (tmp == ";"){
           Semicolon* semying = new Semicolon;
           commandList.push_back(semying);
         }
-        else if (input == "||"){
+        else if (tmp == "||"){
           Or* oring = new Or;
           commandList.push_back(oring);
         }
         else {
-          if (input == "exit"){//exits while loop if exit is found
+          if (tmp == "exit"){//exits while loop if exit is found
             found = true;
           }
-          parse->set_input(input);
+          Command* parse = new Command(tmp);
           commandList.push_back(parse);//pushes string to vector
         }
   }
