@@ -44,7 +44,7 @@ void Execution::make_tree(){
     string currentCommand = commandList.at(i);
     if (currentCommand == "&&" ){
       //do work
-      And anding = new And;
+      And anding = new And();
     }
     else if (currentCommand == "||"){
       //do work

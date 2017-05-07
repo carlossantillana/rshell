@@ -1,9 +1,11 @@
 #include "and.h"
-And(RShell *l, RShell *r) //Constructor
-{
-  this->left=l;
-  this->right=r;
-}
+
+And::And() {} //Default Constructor
+
+And::And(RShell *l, RShell *r) //Constructor
+: left(l), right(r)
+{}
+
 bool And::execute() //Returns true if both sides are true
 {
   if(left->execute() && right->execute())
@@ -15,4 +17,8 @@ bool And::execute() //Returns true if both sides are true
     return false;
   }
 }
-};
+
+string And::get_input()
+{
+  return "";
+}

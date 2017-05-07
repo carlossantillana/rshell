@@ -9,7 +9,10 @@ private:
 	RShell *left;
 	RShell *right;
 public:
-	And(RShell *l, RShell *r); //Constructor
+	And(); //Defalut Constructor
+	And(RShell *l, RShell *r); //RShell Constructor
 	bool execute(); //Returns true if both sides are true
+	string get_input();
+};
 
 #endif
