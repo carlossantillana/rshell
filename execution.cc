@@ -28,7 +28,7 @@ bool Execution::execute()// not done yet
   return ret_val;
 }
 
-void Execution::set_commands(vector<string> commandList){
+void Execution::set_commands(vector<RShell*> commandList){
   this->commandList = commandList;
 }
 

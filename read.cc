@@ -57,6 +57,6 @@ string Read::get_input(){
 void Read::set_input(string input){
   this->input = input;
 }
-vector<string> Read::get_commands(){
+vector<RShell*> Read::get_commands(){
   return commandList;
 }

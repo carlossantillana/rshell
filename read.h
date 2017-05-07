@@ -19,7 +19,7 @@ public:
     bool get_found();
     virtual bool execute();
     virtual string get_input();
-    vector<string> get_commands();
+    vector<RShell*> get_commands();
 };
 
 #endif

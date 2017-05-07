@@ -15,7 +15,7 @@ public:
     Execution();
     bool execute();
     string get_input();
-    void set_commands(vector<string> commandList);
+    void set_commands(vector<RShell*> commandList);
     void print();
     void make_tree();
 };
