@@ -3,14 +3,16 @@
 
 #include "connector.h"
 
-class SemiColon : public Connector
+class Semicolon : public Connector
 {
 private:
 	RShell *left;
 	RShell *right;
 public:
-	SemiColon(RShell *l, RShell *r) //Constructor
-	: left(l}, right(r)
+	Semicolon() {} //Defalut Constructor
+
+	Semicolon(RShell *l, RShell *r) //Constructor
+	: left(l), right(r)
 	{}
 
 	bool execute() //Returns true if one argument is true

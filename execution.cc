@@ -2,9 +2,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-//#include "and.h"
+#include "and.h"
 #include "or.h"
-//#include "semicolon.h"
+#include "semicolon.h"
 
 Execution::Execution(){}
 
@@ -44,8 +44,8 @@ void Execution::make_tree(){
     string currentCommand = commandList.at(i);
     if (currentCommand == "&&" ){
       //do work
-      //And* anding = new And;
-      //anding->execute();
+      And* anding = new And;
+      anding->execute();
     }
     else if (currentCommand == "||"){
       //do work
@@ -54,7 +54,8 @@ void Execution::make_tree(){
     }
     else if (currentCommand == ";"){
       //do work
-    //Semicolon semicolon = new Semicolon;
+      Semicolon* semying = new Semicolon;
+      semying->execute();
     }
     else{
       //do something else

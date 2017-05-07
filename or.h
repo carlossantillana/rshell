@@ -26,11 +26,6 @@ public:
 			return false;
 		}
 	}
-
-	string get_input()
-	{
-		return "";
-	}
 };
 
 #endif

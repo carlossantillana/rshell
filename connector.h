@@ -1,5 +1,5 @@
 #ifndef __CONNECTOR_H__
-#define __CONNECTOR_H_
+#define __CONNECTOR_H__
 
 #include "rshell.h"
 
