@@ -8,11 +8,14 @@ class And : public Connector //Conector is the base of operators
 private:
 	RShell *left;
 	RShell *right;
+	string type;
 public:
-	And() {} //Defalut Constructor
+	And() //Default Constructor
+	: type("&&")
+	{}
 
 	And(RShell *l, RShell *r) //RShell Constructor
-	: left(l), right(r)
+	: left(l), right(r), type("&&")
 	{}
 
 	bool execute() //Returns true if both sides are true
@@ -25,6 +28,11 @@ public:
 		{
 			return false;
 		}
+	}
+
+	string get_type()
+	{
+		return type;
 	}
 };
 

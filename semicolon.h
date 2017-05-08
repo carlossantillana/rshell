@@ -8,11 +8,14 @@ class Semicolon : public Connector
 private:
 	RShell *left;
 	RShell *right;
+	string type;
 public:
-	Semicolon() {} //Defalut Constructor
+	Semicolon() //Defalut Constructor
+	: type(";")
+	{}
 
 	Semicolon(RShell *l, RShell *r) //Constructor
-	: left(l), right(r)
+	: left(l), right(r), type(";")
 	{}
 
 	bool execute() //Returns true if one argument is true
@@ -25,6 +28,11 @@ public:
 		{
 			return false;
 		}
+	}
+
+	string get_type()
+	{
+		return type;
 	}
 };
 

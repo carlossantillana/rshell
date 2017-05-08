@@ -8,11 +8,14 @@ class Or : public Connector
 private:
 	RShell *left;
 	RShell *right;
+	string type;
 public:
-	Or() {} //Default Constructor
+	Or()  //Default Constructor
+	: type("||")
+	{}
 
 	Or(RShell *l, RShell *r) //Constructor
-	: left(l), right(r)
+	: left(l), right(r), type("||")
 	{}
 
 	bool execute() //Returns true if one argument is true
@@ -25,6 +28,11 @@ public:
 		{
 			return false;
 		}
+	}
+
+	string get_type()
+	{
+		return type;
 	}
 };
 

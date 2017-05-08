@@ -11,6 +11,7 @@ class RShell //Base class
 {
 private:
     string input; //User input
+    string type; //Visible representation of children
 public:
     RShell() {} //Default Constructor
     virtual bool execute() = 0; //pure virtual
@@ -18,7 +19,7 @@ public:
     /*virtual void set_input(string i)
     {
       this->input = i;
-    } delete later if remained unused.*/ 
+    } delete later if remained unused.*/
 };
 
 #endif

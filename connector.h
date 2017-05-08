@@ -8,12 +8,14 @@ class Connector: public RShell //No longer child of execute
 private:
     RShell *left; //Operation left of connector
     RShell *right; //Operation right of connector
+    string type; //Sets type of child
 public:
     string get_input() //Prevents abstraction, but does nothing
     {
-          return "String Theory";
+      return "String Theory";
     }
 
+    virtual string get_type() = 0; //Outputs type string
     virtual bool execute() = 0; //Pure virtual
 };
 
