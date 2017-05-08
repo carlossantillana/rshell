@@ -21,6 +21,7 @@ public:
     virtual string get_input();
     vector<RShell*> get_commands();
     void clear();
+    bool empty();
 };
 
 #endif

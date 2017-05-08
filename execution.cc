@@ -14,6 +14,8 @@ Execution::Execution(){}
 //list yet.
 bool Execution::execute()
 {
+  if (commandList.at(0) == NULL || commandList.at(0)->get_input() == "exit")
+    return false;
   char* argv[] = {(char*)commandList.at(0)->get_input().c_str(), NULL};
   bool ret_val = true;
 	pid = fork();

@@ -18,8 +18,9 @@ void Read::par(){
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector
         tmp = *tok_iter;
-        if (tmp == "#")//Breaks if #
+        if (tmp == "#"){//Breaks if #
           break;
+        }
         else if (tmp == "&&"){
           And* anding = new And;
           commandList.push_back(anding);
@@ -33,7 +34,7 @@ void Read::par(){
           commandList.push_back(oring);
         }
         else {
-          if (tmp == "exit"){//exits while loop if exit is found
+          if (tmp == "exit"){
             found = true;
           }
           Command* parse = new Command(tmp);
@@ -62,4 +63,10 @@ vector<RShell*> Read::get_commands(){
 }
 void Read::clear(){
   this->commandList.clear();
+}
+bool Read::empty(){
+  if (this->commandList.empty())
+    return true;
+  else
+    return false;
 }
