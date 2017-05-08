@@ -12,7 +12,7 @@ private:
 public:
     string get_input() //Prevents abstraction, but does nothing
     {
-      return "String Theory";
+      return "String";
     }
 
     virtual string get_type() = 0; //Outputs type string
