@@ -10,7 +10,6 @@ int main()
     {
     	cout << "$ ";
       getline(cin,input);
-			cout << input << endl;
       read->set_input(input);
       read->par();
 			execution->set_commands(read->get_commands());

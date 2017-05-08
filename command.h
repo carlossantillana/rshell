@@ -13,6 +13,8 @@ class Command: public Execution{
         virtual bool execute()
         {return true;};
         virtual string get_input()
+        {return "";};
+        string get_type()
         {return command;};
 };
 

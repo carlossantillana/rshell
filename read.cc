@@ -46,7 +46,9 @@ void Read::par(){
 bool Read::get_found(){
   return this->found;
 }
-
+string Read::get_type(){
+  return "read";
+}
 bool Read::execute(){
   return true;
 }
