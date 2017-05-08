@@ -2,31 +2,30 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
 
 Execution::Execution(){}
 
-bool Execution::execute()// not done yet
+//very basic. only work with one arguement and doesnt handle connectors or arguement
+//list yet.
+bool Execution::execute()
 {
-
+  char* argv[] = {(char*)commandList.at(0)->get_input().c_str(), NULL};
   bool ret_val = true;
 	pid = fork();
-  if (pid == 0)
-  {//child
-/*    if (execvp(insert command list here) == -1)
-    {
-      perror("execvp");
+  if (pid == 0){//child
+    if (execvp((char*)commandList.at(0)->get_input().c_str(), argv) == -1){
+  //    perror("execvp");
     }
-*/
   }
-  if (pid > 0)
-  {//parent
-    if (wait(0) == -1)
-    {
+  if (pid > 0){//parent
+    if (wait(0) == -1){
     //  perror("wait");
     }
+    ret_val = false;
   }
   return ret_val;
 }
@@ -34,6 +33,8 @@ bool Execution::execute()// not done yet
 void Execution::set_commands(vector<RShell*> commandList)
 {
   this->commandList = commandList;
+  this->commandList.push_back(NULL);//used for execvp
+  cout << (char*)this->commandList.at(0)->get_input().c_str() << endl;
 }
 
 string Execution::get_input()

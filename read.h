@@ -20,6 +20,7 @@ public:
     virtual bool execute();
     virtual string get_input();
     vector<RShell*> get_commands();
+    void clear();
 };
 
 #endif

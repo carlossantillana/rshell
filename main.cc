@@ -16,7 +16,9 @@ int main()
 			{
 				break;
 			}
-		execution->set_commands(read->get_commands());
+			execution->set_commands(read->get_commands());
+			execution->execute();
+			read->clear();
 		}
 		//delete read; need to figure out memory management...
   	return 0;

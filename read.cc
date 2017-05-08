@@ -18,7 +18,6 @@ void Read::par(){
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector
         tmp = *tok_iter;
-        cout << "input is " << tmp << endl;
         if (tmp == "#")//Breaks if #
           break;
         else if (tmp == "&&"){
@@ -60,4 +59,7 @@ void Read::set_input(string input){
 }
 vector<RShell*> Read::get_commands(){
   return commandList;
+}
+void Read::clear(){
+  this->commandList.clear();
 }
