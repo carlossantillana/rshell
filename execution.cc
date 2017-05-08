@@ -17,17 +17,15 @@ bool Execution::execute()
   if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")
     return false;
     const int size = commandList.size();
-    char ** argv = new char* [size+1];
-  for (unsigned int i=0; i < commandList.size()-1; i++){
+    char ** argv = new char* [size];
+  for (unsigned int i=1; i < commandList.size()-1; i++){
     argv[i] = (char*)commandList.at(i)->get_type().c_str();
-    cout << "argv " << argv[i] << endl;
-    cout << "command List " << commandList.at(i)->get_type() << endl;
   }
-  argv[commandList.size()+1] = NULL;
+  argv[commandList.size()-1] = NULL;
   bool ret_val = true;
 	pid = fork();
   if (pid == 0){//child
-    if (execvp(argv[0], argv) == -1){
+    if (execvp(commandList.at(0)->get_type().c_str(), argv) == -1){
       perror("execvp");
       ret_val = false;
     }
