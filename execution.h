@@ -14,6 +14,7 @@ public:
     string get_input();
     void set_commands(vector<RShell*> commandList);
     void make_tree();
+    virtual string get_type();
 };
 
 #endif

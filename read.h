@@ -22,6 +22,7 @@ public:
     vector<RShell*> get_commands();
     void clear();
     bool empty();
+    virtual string get_type();
 };
 
 #endif

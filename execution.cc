@@ -14,13 +14,20 @@ Execution::Execution(){}
 //list yet.
 bool Execution::execute()
 {
-  if (commandList.at(0) == NULL || commandList.at(0)->get_input() == "exit")
+  if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")
     return false;
-  char* argv[] = {(char*)commandList.at(0)->get_input().c_str(), NULL};
+    const int size = commandList.size();
+    char ** argv = new char* [size+1];
+  for (unsigned int i=0; i < commandList.size()-1; i++){
+    argv[i] = (char*)commandList.at(i)->get_type().c_str();
+    cout << "argv " << argv[i] << endl;
+    cout << "command List " << commandList.at(i)->get_type() << endl;
+  }
+  argv[commandList.size()+1] = NULL;
   bool ret_val = true;
 	pid = fork();
   if (pid == 0){//child
-    if (execvp((char*)commandList.at(0)->get_input().c_str(), argv) == -1){
+    if (execvp(argv[0], argv) == -1){
       perror("execvp");
       ret_val = false;
     }
@@ -45,7 +52,9 @@ string Execution::get_input()
 {
   return "";
 }
-
+string Execution::get_type(){
+  return "Execution";
+}
 /*
 =======
 >>>>>>> master
