@@ -104,6 +104,11 @@ void Execution::make_tree(vector<RShell*> cList)
           leftChild.push_back(cList.at(j)); //Fills lefthand side vector
         }
         cList.erase(cList.begin() + i - 1); //Removes used part of commandList
+        if(cList.at(0)->get_type() != "&&" && cList.at(0)->get_type() != "||" && cList.at(0)->get_type() != ";")
+        {
+          rightChild.push_back(cList.at(0));
+          cList.erase(cList.begin());
+        }
         make_tree(cList); //Temporary solution
       }
       else
@@ -121,6 +126,11 @@ void Execution::make_tree(vector<RShell*> cList)
           leftChild.push_back(cList.at(j)); //Fills lefthand side vector
         }
         cList.erase(cList.begin() + i - 1); //Removes used part of commandList
+        if(cList.at(0)->get_type() != "&&" && cList.at(0)->get_type() != "||" && cList.at(0)->get_type() != ";")
+        {
+          rightChild.push_back(cList.at(0));
+          cList.erase(cList.begin());
+        }
         make_tree(cList); //Temporary solution
       }
       else
