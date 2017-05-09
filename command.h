@@ -1,21 +1,28 @@
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 
-#include <string>
+#include "execution.h"
 
-class Command: public Execution{
+class Command: public Execution
+{
     private:
-        string command;
+        string type;
     public:
         Command(string i)
-        :command(i)
+        :type(i)
         {}
         virtual bool execute()
-        {return true;};
+        {
+          return true;
+        }
         virtual string get_input()
-        {return "";};
+        {
+          return "";
+        }
         string get_type()
-        {return command;};
+        {
+          return type;
+        }
 };
 
 #endif

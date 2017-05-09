@@ -13,7 +13,7 @@ public:
     bool execute();
     string get_input();
     void set_commands(vector<RShell*> commandList);
-    void make_tree();
+    vector<RShell*> make_tree();
     virtual string get_type();
     vector<char *> str_to_char();
 };

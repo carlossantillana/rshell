@@ -48,7 +48,8 @@ string Execution::get_type(){
   return "Execution";
 }
 //Converts vect of string ot vect of char pointers
-vector<char *> Execution::str_to_char(){
+vector<char *> Execution::str_to_char()
+{
     vector<char *> vectChar;
 
     for(unsigned int  i = 0; i < commandList.size(); ++i){
@@ -60,11 +61,11 @@ vector<char *> Execution::str_to_char(){
     }
     return vectChar;
 }
-/*
-=======
->>>>>>> master
-void Execution::make_tree(){
-  for(unsigned int i=0; i <this->commandList.size(); i++)
+
+vector<RShell*> Execution::make_tree()
+{
+  vector<RShell*> tree;
+  /*for(unsigned int i=0; i <this->commandList.size(); i++)
   {
     string currentCommand = commandList.at(i);
     if (currentCommand == "&&" )
@@ -91,5 +92,6 @@ void Execution::make_tree(){
 
     }
   }
+  */
+  return  tree;
 }
-*/
