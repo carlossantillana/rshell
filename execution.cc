@@ -65,10 +65,13 @@ void Execution::make_tree()
 {
   vector<RShell*> leftChild; //Creates lefthand side vector
   vector<RShell*> rightChild; //Creates righthand side vector
-  if(commandList.size() <= 1)
-  {
-    return;
-  }
+  // while(commandList.size() <= 3 && (commandList.at(f)->get_type() != "&&"
+  // && commandList.at(f)->get_type() != "||" && commandList.at(f)->get_type() != ";"))
+  // {
+  //   rightChild = commandList;
+  //   f++;
+  //   return;
+  // }
   for(unsigned int i = 0; i < commandList.size(); i++)
   {
     //Checks for connector
@@ -86,9 +89,14 @@ void Execution::make_tree()
         while(z < commandList.size() && (commandList.at(z)->get_type() != "&&"
         && commandList.at(z)->get_type() != "||" && commandList.at(z)->get_type() != ";"))
         {
-          rightChild.push_back(commandList.at(0));
-          commandList.erase(commandList.begin());
+          rightChild.push_back(commandList.at(z));
+          z++;
         }
+        if(z > 0)
+        {
+          commandList.erase(commandList.begin() + z - 1);
+        }
+        execute(rightChild);
         make_tree(); //Temporary solution
       }
       else
@@ -97,5 +105,6 @@ void Execution::make_tree()
       }
     }
   }
-  return;
+  rightChild = commandList;
+  execute(rightChild);
 }
