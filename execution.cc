@@ -9,14 +9,12 @@
 #include "or.h"
 #include "semicolon.h"
 
-Execution::Execution(){}
-
-bool Execution::execute()
+bool Execution::execute(vector<RShell*> tree)
 {
-  if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")//makes sure exit quits
+  if (tree.at(0) == NULL || tree.at(0)->get_type() == "exit")//makes sure exit quits
     return false;
   bool ret_val = true;
-  vector<char *> argv = str_to_char();//converts vect of string to vect of char* for execvp
+  vector<char *> argv = str_to_char(tree);//converts vect of string to vect of char* for execvp
   argv.push_back(NULL);
 	pid = fork();
   if (pid == 0){//child commandList.at(0)->get_type().c_str()
@@ -49,46 +47,49 @@ string Execution::get_type()
   return "Execution";
 }
 //Converts vect of string ot vect of char pointers
-vector<char *> Execution::str_to_char()
+vector<char *> Execution::str_to_char(vector<RShell*> tree)
 {
     vector<char *> vectChar;
 
-    for(unsigned int  i = 0; i < commandList.size(); ++i){
+    for(unsigned int  i = 0; i < tree.size(); ++i){
         char *tmp;
-        tmp = new char[commandList[i]->get_type().size() + 1];
-        memcpy(tmp, commandList[i]->get_type().c_str(), commandList[i]->get_type().size() + 1);
+        tmp = new char[tree[i]->get_type().size() + 1];
+        memcpy(tmp, tree[i]->get_type().c_str(), tree[i]->get_type().size() + 1);
 
         vectChar.push_back(tmp);
     }
     return vectChar;
 }
 
-void Execution::make_tree(vector<RShell*> cList)
+void Execution::make_tree()
 {
   vector<RShell*> leftChild; //Creates lefthand side vector
   vector<RShell*> rightChild; //Creates righthand side vector
-  if(cList.size() <= 1)
+  if(commandList.size() <= 1)
   {
     return;
   }
-  for(unsigned int i = 0; i < cList.size(); i++)
+  for(unsigned int i = 0; i < commandList.size(); i++)
   {
     //Checks for connector
-    if(cList.at(i)->get_type() == "&&" || cList.at(i)->get_type() == "||" || cList.at(i)->get_type() == ";")
+    if(commandList.at(i)->get_type() == "&&" || commandList.at(i)->get_type() == "||"
+    || commandList.at(i)->get_type() == ";")
     {
-      if(cList.at(i)->execute() == true) //If connector's children meet bool conditions
+      if(commandList.at(i)->execute() == true) //If connector's children meet bool conditions
       {
         for(unsigned int j = 0; j < i; j++)
         {
-          leftChild.push_back(cList.at(j)); //Fills lefthand side vector
+          leftChild.push_back(commandList.at(j)); //Fills lefthand side vector
         }
-        cList.erase(cList.begin() + i - 1); //Removes used part of commandList
-        if(cList.at(0)->get_type() != "&&" && cList.at(0)->get_type() != "||" && cList.at(0)->get_type() != ";")
+        commandList.erase(commandList.begin() + i - 1); //Removes used part of commandList
+        unsigned int z = 0;
+        while(z < commandList.size() && (commandList.at(z)->get_type() != "&&"
+        && commandList.at(z)->get_type() != "||" && commandList.at(z)->get_type() != ";"))
         {
-          rightChild.push_back(cList.at(0));
-          cList.erase(cList.begin());
+          rightChild.push_back(commandList.at(0));
+          commandList.erase(commandList.begin());
         }
-        make_tree(cList); //Temporary solution
+        make_tree(); //Temporary solution
       }
       else
       {
@@ -96,4 +97,5 @@ void Execution::make_tree(vector<RShell*> cList)
       }
     }
   }
+  return;
 }

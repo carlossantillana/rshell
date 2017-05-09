@@ -15,6 +15,7 @@ int main()
 	    read->par();
 			execution->set_commands(read->get_commands());
 			execution->execute();
+			//execution->make_tree();
 			read->clear();
 	}
 	}

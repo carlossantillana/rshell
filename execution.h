@@ -9,13 +9,14 @@ private:
     vector<RShell*> commandList;
     pid_t pid;
 public:
-    Execution();
-    bool execute();
+    Execution() {}
+    bool execute(){return true;}
+    bool execute(vector<RShell*> tree);
     string get_input();
     void set_commands(vector<RShell*> commandList);
-    void make_tree(vector<RShell*> cList);
+    void make_tree();
     virtual string get_type();
-    vector<char *> str_to_char();
+    vector<char *> str_to_char(vector<RShell*> tree);
 };
 
 #endif
