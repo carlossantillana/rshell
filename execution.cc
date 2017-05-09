@@ -44,7 +44,8 @@ string Execution::get_input()
 {
   return "";
 }
-string Execution::get_type(){
+string Execution::get_type()
+{
   return "Execution";
 }
 //Converts vect of string ot vect of char pointers
@@ -64,34 +65,41 @@ vector<char *> Execution::str_to_char()
 
 vector<RShell*> Execution::make_tree()
 {
-  vector<RShell*> tree;
-  /*for(unsigned int i=0; i <this->commandList.size(); i++)
+  for(unsigned int i = 0; i < this->commandList.size(); i++)
   {
-    string currentCommand = commandList.at(i);
-    if (currentCommand == "&&" )
+    if(commandList.at(i)->get_type() == "&&") //Checks for && connector
     {
-      //do work
-      And* anding = new And;
-      anding->execute();
+      if(commandList.at(i)->execute() == true) //If both children true it works
+      {
+        return commandList;
+      }
+      else
+      {
+        break;
+      }
     }
-    else if (currentCommand == "||")
+    else if(commandList.at(i)->get_type() == "||") //Checks for || connector
     {
-      //do work
-      Or* oring = new Or;
-      oring->execute();
+      if(commandList.at(i)->execute() == true) //If at least one child is true works
+      {
+        return commandList;
+      }
+      else
+      {
+        break;
+      }
     }
-    else if (currentCommand == ";")
+    else if(commandList.at(i)->get_type() == ";") //Checks for ; connector
     {
-      //do work
-      Semicolon* semying = new Semicolon;
-      semying->execute();
-    }
-    else
-    {
-      //do something else
-
+      if(commandList.at(i)->execute() == true) //If at least first child is true works
+      {
+        return commandList;
+      }
+      else
+      {
+        break;
+      }
     }
   }
-  */
-  return  tree;
+  return commandList;
 }
