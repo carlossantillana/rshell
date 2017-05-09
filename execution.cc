@@ -71,7 +71,13 @@ vector<RShell*> Execution::make_tree()
     {
       if(commandList.at(i)->execute() == true) //If both children true it works
       {
-        return commandList;
+        vector<RShell*> leftChild; //Creates lefthand side vector
+        for(unsigned int j = 0; j < i; j++)
+        {
+          leftChild.push_back(commandList.at(j)); //Fills lefthand side vector
+        }
+        commandList.erase(commandList.begin() + i - 1); //Removes used part of commandList
+        return leftChild; //Temporary solution
       }
       else
       {
@@ -82,7 +88,13 @@ vector<RShell*> Execution::make_tree()
     {
       if(commandList.at(i)->execute() == true) //If at least one child is true works
       {
-        return commandList;
+        vector<RShell*> leftChild; //Creates lefthand side vector
+        for(unsigned int j = 0; j < i; j++)
+        {
+          leftChild.push_back(commandList.at(j)); //Fills lefthand side vector
+        }
+        commandList.erase(commandList.begin() + i - 1); //Removes used part of commandList
+        return leftChild; //Temporary solution
       }
       else
       {
@@ -93,7 +105,13 @@ vector<RShell*> Execution::make_tree()
     {
       if(commandList.at(i)->execute() == true) //If at least first child is true works
       {
-        return commandList;
+        vector<RShell*> leftChild; //Creates lefthand side vector
+        for(unsigned int j = 0; j < i; j++)
+        {
+          leftChild.push_back(commandList.at(j)); //Fills lefthand side vector
+        }
+        commandList.erase(commandList.begin() + i - 1); //Removes used part of commandList
+        return leftChild; //Temporary solution
       }
       else
       {
