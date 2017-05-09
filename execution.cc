@@ -4,29 +4,23 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <cstring>
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
 
 Execution::Execution(){}
 
-//very basic. only work with one arguement and doesnt handle connectors or arguement
-//list yet.check internal flag that skip!
 bool Execution::execute()
 {
-  if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")
+  if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")//makes sure exit quits
     return false;
-  const int size = commandList.size();
-  char ** argv = new char* [size];
-  for (unsigned int i=0; i < commandList.size(); i++){
-    argv[i] = (char*)commandList.at(i)->get_type().c_str();
-  }
-  //erase later
-  argv[commandList.size()] = NULL;
   bool ret_val = true;
+  vector<char *> argv = str_to_char();//converts vect of string to vect of char* for execvp
+  argv.push_back(NULL);
 	pid = fork();
-  if (pid == 0){//child
-    if (execvp(commandList.at(0)->get_type().c_str(), argv) == -1){
+  if (pid == 0){//child commandList.at(0)->get_type().c_str()
+    if (execvp(argv[0], argv.data()) == -1){// runs command
       perror("execvp");
       ret_val = false;
     }
@@ -52,6 +46,19 @@ string Execution::get_input()
 }
 string Execution::get_type(){
   return "Execution";
+}
+//Converts vect of string ot vect of char pointers
+vector<char *> Execution::str_to_char(){
+    vector<char *> vectChar;
+
+    for(unsigned int  i = 0; i < commandList.size(); ++i){
+        char *tmp;
+        tmp = new char[commandList[i]->get_type().size() + 1];
+        memcpy(tmp, commandList[i]->get_type().c_str(), commandList[i]->get_type().size() + 1);
+
+        vectChar.push_back(tmp);
+    }
+    return vectChar;
 }
 /*
 =======

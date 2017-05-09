@@ -10,7 +10,7 @@ int main()
   {
   	cout << "$ ";
     getline(cin,input);
-		if (!input.empty()){
+		if (!input.empty()){//checks for empty string case
 	    read->set_input(input);
 	    read->par();
 			execution->set_commands(read->get_commands());
