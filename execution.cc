@@ -67,60 +67,17 @@ void Execution::make_tree(vector<RShell*> cList)
 {
   vector<RShell*> leftChild; //Creates lefthand side vector
   vector<RShell*> rightChild; //Creates righthand side vector
-  if(cList.size() == 1)
+  if(cList.size() <= 1)
   {
     return;
   }
   for(unsigned int i = 0; i < cList.size(); i++)
   {
-    if(cList.at(i)->get_type() == "&&") //Checks for && connector
+    //Checks for connector
+    if(cList.at(i)->get_type() == "&&" || cList.at(i)->get_type() == "||" || cList.at(i)->get_type() == ";")
     {
-      if(cList.at(i)->execute() == true) //If both children true it works
+      if(cList.at(i)->execute() == true) //If connector's children meet bool conditions
       {
-        for(unsigned int j = 0; j < i; j++)
-        {
-          leftChild.push_back(cList.at(j)); //Fills lefthand side vector
-        }
-        cList.erase(cList.begin() + i - 1); //Removes used part of commandList
-        if(cList.at(0)->get_type() != "&&" && cList.at(0)->get_type() != "||" && cList.at(0)->get_type() != ";")
-        {
-          rightChild.push_back(cList.at(0));
-          cList.erase(cList.begin());
-        }
-        make_tree(cList); //Temporary solution
-      }
-      else
-      {
-        break;
-      }
-    }
-    else if(cList.at(i)->get_type() == "||") //Checks for || connector
-    {
-      if(cList.at(i)->execute() == true) //If at least one child is true works
-      {
-        vector<RShell*> leftChild; //Creates lefthand side vector
-        for(unsigned int j = 0; j < i; j++)
-        {
-          leftChild.push_back(cList.at(j)); //Fills lefthand side vector
-        }
-        cList.erase(cList.begin() + i - 1); //Removes used part of commandList
-        if(cList.at(0)->get_type() != "&&" && cList.at(0)->get_type() != "||" && cList.at(0)->get_type() != ";")
-        {
-          rightChild.push_back(cList.at(0));
-          cList.erase(cList.begin());
-        }
-        make_tree(cList); //Temporary solution
-      }
-      else
-      {
-        break;
-      }
-    }
-    else if(cList.at(i)->get_type() == ";") //Checks for ; connector
-    {
-      if(cList.at(i)->execute() == true) //If at least first child is true works
-      {
-        vector<RShell*> leftChild; //Creates lefthand side vector
         for(unsigned int j = 0; j < i; j++)
         {
           leftChild.push_back(cList.at(j)); //Fills lefthand side vector
