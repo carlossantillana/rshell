@@ -1,3 +1,6 @@
+//Copyright 2016 Jonathan Woolf and Carlos Santillana
+//This program is distributed under the terms of the GNU General Public License
+
 #ifndef __COMMAND_H__
 #define __COMMAND_H__
 

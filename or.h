@@ -1,3 +1,6 @@
+//Copyright 2016 Jonathan Woolf and Carlos Santillana
+//This program is distributed under the terms of the GNU General Public License
+
 #ifndef __OR_H__
 #define __OR_H__
 

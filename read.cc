@@ -1,3 +1,6 @@
+//Copyright 2016 Jonathan Woolf and Carlos Santillana
+//This program is distributed under the terms of the GNU General Public License
+
 #include "read.h"
 #include<boost/tokenizer.hpp>
 #include "and.h"
