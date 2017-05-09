@@ -41,6 +41,7 @@ void Read::par(){
           commandList.push_back(parse);//pushes string to vector
         }
   }
+
 }
 
 bool Read::get_found(){

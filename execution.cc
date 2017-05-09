@@ -11,17 +11,18 @@
 Execution::Execution(){}
 
 //very basic. only work with one arguement and doesnt handle connectors or arguement
-//list yet.
+//list yet.check internal flag that skip!
 bool Execution::execute()
 {
   if (commandList.at(0) == NULL || commandList.at(0)->get_type() == "exit")
     return false;
-    const int size = commandList.size();
-    char ** argv = new char* [size];
-  for (unsigned int i=1; i < commandList.size()-1; i++){
+  const int size = commandList.size();
+  char ** argv = new char* [size];
+  for (unsigned int i=0; i < commandList.size(); i++){
     argv[i] = (char*)commandList.at(i)->get_type().c_str();
   }
-  argv[commandList.size()-1] = NULL;
+  //erase later
+  argv[commandList.size()] = NULL;
   bool ret_val = true;
 	pid = fork();
   if (pid == 0){//child
@@ -43,7 +44,6 @@ bool Execution::execute()
 void Execution::set_commands(vector<RShell*> commandList)
 {
   this->commandList = commandList;
-  this->commandList.push_back(NULL);//used for execvp
 }
 
 string Execution::get_input()
