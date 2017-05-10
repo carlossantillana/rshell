@@ -78,8 +78,8 @@ void Execution::make_tree(){
         i++;
       }
       commandList.erase(commandList.begin(), commandList.begin()+ i);
-      if (i < commandList.size()){
-        while(k < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
+      if (i < commandList.size()){//if i hasnt already iterated through entirerty of list
+        while(k < commandList.size() && commandList.at(k)->get_type() != "&&" && commandList.at(k)->get_type() != "||" && commandList.at(k)->get_type() != ";")
         {// if left child had a connector fill right child
           leftChild.push_back(commandList.at(k));
           k++;
@@ -87,8 +87,6 @@ void Execution::make_tree(){
         command = commandList.front()->get_type();
         commandList.erase(commandList.begin(), commandList.begin()+ k);
     }
-      k=0;
-      i=0;
       if (!command.empty()){//if connector found run connector
         if (command == "&&"){
           execute(rightChild);

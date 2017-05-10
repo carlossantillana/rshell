@@ -40,7 +40,5 @@ $
 
 Bugs:
 Multiple exits required occasionally
-Multiple connectors not accepted
-mkdir s &&  ls throws out of range
 probably has memory leaks
 does not pass any test .sh file case. I may have made those wrong
