@@ -27,11 +27,15 @@ rshell does virtually everything the bash shell does, save for some subtleties.
 For example, it will not perform the cd command.
 
 The following commands work as expected: ls (including  -a, -l, and -R),
-cp, cat, echo, printf, mkdir, rmdir.
+cp, cat, echo, printf, mkdir, rmdir. all git commands
 
 Sample output as follows:
 
 Please enter a command:
+$ echo A && echo B || echo C && echo D
+A
+B
+D
 $
 
 Bugs:
@@ -39,3 +43,5 @@ Bugs:
 Multiple exits required occasionally
 Multiple connectors not accepted
 mkdir s &&  ls throws out of range
+probably has memory leaks
+does not pass any test .sh file case. I may have made those wrong
