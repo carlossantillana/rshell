@@ -13,10 +13,10 @@ private:
     string input;
     bool found;
     vector<RShell*> commandList;
-    //vector<string> commandList;
 public:
     Read();
     Read(string i);
+    ~Read();
     void par();
     void set_input(string input);
     bool get_found();

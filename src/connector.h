@@ -13,6 +13,8 @@ private:
     RShell *right; //Operation right of connector
     string type; //Sets type of child
 public:
+  Connector(){}
+  ~Connector(){}
     string get_input() //Prevents abstraction, but does nothing
     {
       return "String";

@@ -12,7 +12,8 @@ private:
     vector<RShell*> commandList;
     pid_t pid;
 public:
-    Execution() {}
+    Execution(){}
+    ~Execution();
     bool execute(){return true;}
     bool execute(vector<RShell*> tree);
     string get_input();

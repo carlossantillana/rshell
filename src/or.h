@@ -16,11 +16,13 @@ public:
 	Or()  //Default Constructor
 	: type("||")
 	{}
-
 	Or(RShell *l, RShell *r) //Constructor
 	: left(l), right(r), type("||")
 	{}
-
+	~Or(){
+		delete left;
+		delete right;
+	}
 	bool execute() //Returns true if one argument is true
 	{
 		if(left->execute() || right->execute())

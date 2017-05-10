@@ -9,11 +9,12 @@
 class Command: public RShell
 {
     private:
-        string type; //Ex. ls, ls -a (Don't know what else should work TBH)
+        string type;// command and arguement list
     public:
         Command(string i) //Constructor reads in command type
         :type(i)
         {}
+        ~Command(){}
         virtual bool execute() //Returns true if command exists
         {
           return true;

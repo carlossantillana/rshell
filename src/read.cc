@@ -13,6 +13,14 @@ Read::Read(): found(false){}
 
 Read::Read(string i) : input(i), found(false){}
 
+Read::~Read(){
+  for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
+  {
+    delete (*iter);
+  }
+  commandList.clear();
+}
+
 void Read::par(){
   string tmp;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;

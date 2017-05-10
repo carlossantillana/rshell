@@ -12,6 +12,13 @@
 #include "or.h"
 #include "semicolon.h"
 
+Execution::~Execution() {
+    for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
+    {
+      delete (*iter);
+    }
+    commandList.clear();
+}
 bool Execution::execute(vector<RShell*> tree)
 {
   if (tree.at(0) == NULL || tree.at(0)->get_type() == "exit")//makes sure exit quits
@@ -34,6 +41,12 @@ bool Execution::execute(vector<RShell*> tree)
     }
 
   }
+  //memory management
+  for (vector<char* >::iterator iter = argv.begin() ; iter != argv.end(); ++iter)
+  {
+    delete (*iter);
+  }
+  argv.clear();
   return ret_val;
 }
 

@@ -19,8 +19,9 @@ int main()
 			execution->set_commands(read->get_commands());
 			execution->make_tree();
 			read->clear();
+		}
 	}
-	}
-		//delete read; need to figure out memory management...
+		delete read;
+		delete execution;
   	return 0;
 }

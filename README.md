@@ -40,5 +40,4 @@ $
 
 Bugs:
 Multiple exits required occasionally
-probably has memory leaks
 does not pass any test .sh file case. I may have made those wrong
