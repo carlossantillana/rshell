@@ -19,21 +19,28 @@ In terminal:
 
 Summary:
 
-rshell attempts to mimic a bash-like terminal shell. rshell accepts bash command executables that exist in /bin
-
-ls mimics the GNU ls command and is functional for the "-a", "-l", and "-R" flags.
-
-cp mimics the cp bash command.
+rshell attempts to mimic a bash terminal shell. rshell accepts bash command executables that exist in /bin
 
 Functionality:
 
 rshell does virtually everything the bash shell does, save for some subtleties.
 For example, it will not perform the cd command.
 
+The following commands work as expected: ls (including  -a, -l, and -R),
+cp, cat, echo, printf, mkdir, rmdir. all git commands
+
 Sample output as follows:
 
 Please enter a command:
+$ echo A && echo B || echo C && echo D
+A
+B
+D
 $
 
 Bugs:
-If an invalid input was entered, and you want to exit immediately afterwards you have to enter "exit" multiple times, but usually only twice, to exit.
+Multiple exits required occasionally
+Multiple connectors not accepted
+mkdir s &&  ls throws out of range
+probably has memory leaks
+does not pass any test .sh file case. I may have made those wrong
