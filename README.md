@@ -21,16 +21,13 @@ Summary:
 
 rshell attempts to mimic a bash terminal shell. rshell accepts bash command executables that exist in /bin
 
-ls mimics the GNU ls command and is functional for the "-a", "-l", and "-R" flags.
-
-cp mimics the cp bash command.
-
-cat prints out file
-
 Functionality:
 
 rshell does virtually everything the bash shell does, save for some subtleties.
 For example, it will not perform the cd command.
+
+The following commands work as expected: ls (including  -a, -l, and -R),
+cp, cat, echo, printf, mkdir, rmdir.
 
 Sample output as follows:
 
@@ -41,3 +38,4 @@ Bugs:
 
 Multiple exits required occasionally
 Multiple connectors not accepted
+mkdir s &&  ls throws out of range
