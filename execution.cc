@@ -11,9 +11,6 @@
 
 bool Execution::execute(vector<RShell*> tree)
 {
-  for (unsigned int i =0; i < tree.size(); i++){
-    cout << "currently at " << tree.at(i)->get_type() << endl;
-  }
   if (tree.at(0) == NULL || tree.at(0)->get_type() == "exit")//makes sure exit quits
     return false;
 
@@ -65,50 +62,57 @@ vector<char *> Execution::str_to_char(vector<RShell*> tree)
     return vectChar;
 }
 
-void Execution::make_tree()
-{
-  vector<RShell*> leftChild; //Creates lefthand side vector
-  vector<RShell*> rightChild; //Creates righthand side vector
-  // while(commandList.size() <= 3 && (commandList.at(f)->get_type() != "&&"
-  // && commandList.at(f)->get_type() != "||" && commandList.at(f)->get_type() != ";"))
-  // {
-  //   rightChild = commandList;
-  //   f++;
-  //   return;
-  // }
-  for(unsigned int i = 0; i < commandList.size(); i++)
-  {
-    //Checks for connector
-    if(commandList.at(i)->get_type() == "&&" || commandList.at(i)->get_type() == "||"
-    || commandList.at(i)->get_type() == ";")
-    {
-      if(commandList.at(i)->execute() == true) //If connector's children meet bool conditions
+
+void Execution::make_tree(){
+    vector<RShell*> rightChild;
+    vector<RShell*> leftChild;
+    string command = "";
+  unsigned int i=0, k=1;
+  while (i < commandList.size()){
+      while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
       {
-        for(unsigned int j = 0; j < i; j++)
-        {
-          leftChild.push_back(commandList.at(j)); //Fills lefthand side vector
-        }
-        commandList.erase(commandList.begin() + i - 1); //Removes used part of commandList
-        unsigned int z = 0;
-        while(z < commandList.size() && (commandList.at(z)->get_type() != "&&"
-        && commandList.at(z)->get_type() != "||" && commandList.at(z)->get_type() != ";"))
-        {
-          rightChild.push_back(commandList.at(z));
-          z++;
-        }
-        if(z > 0)
-        {
-          commandList.erase(commandList.begin() + z - 1);
-        }
-        execute(rightChild);
-        make_tree(); //Temporary solution
+        rightChild.push_back(commandList.at(i));
+        i++;
       }
-      else
-      {
-        break;
-      }
+      commandList.erase(commandList.begin(), commandList.begin()+ i);
+      if (i < commandList.size()){
+        while(k < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
+        {
+          leftChild.push_back(commandList.at(k));
+          k++;
+        }
+        command = commandList.front()->get_type();
+        cout << "command " << command << endl;
+        commandList.erase(commandList.begin(), commandList.begin()+ k);
     }
-  }
-  rightChild = commandList;
-  execute(rightChild);
+       for(unsigned int j=0; j < rightChild.size(); j++){
+         cout << "right child at " << j  <<" " << rightChild.at(j)->get_type() << endl;
+       }
+       for(unsigned int j=0; j < leftChild.size(); j++){
+         cout << "left child at " << j  <<" " << leftChild.at(j)->get_type() << endl;
+       }
+      k=0;
+      i=0;
+      if (!command.empty()){
+        if (command == "&&"){
+          execute(rightChild);
+          execute(leftChild);
+        }
+        if (command == "||"){
+          if (!execute(rightChild)){
+            execute(leftChild);
+          }
+        }
+        if (command == ";"){
+          execute(rightChild);
+          execute(leftChild);
+        }
+      }
+      else{
+        execute(rightChild);
+      }
+      rightChild.clear();
+      leftChild.clear();
+      command.clear();
+    }
 }
