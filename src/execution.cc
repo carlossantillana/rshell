@@ -73,30 +73,23 @@ void Execution::make_tree(){
   unsigned int i=0, k=1;
   while (i < commandList.size()){
       while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
-      {
+      {//fills left child
         rightChild.push_back(commandList.at(i));
         i++;
       }
       commandList.erase(commandList.begin(), commandList.begin()+ i);
       if (i < commandList.size()){
         while(k < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
-        {
+        {// if left child had a connector fill right child
           leftChild.push_back(commandList.at(k));
           k++;
         }
         command = commandList.front()->get_type();
-        cout << "command " << command << endl;
         commandList.erase(commandList.begin(), commandList.begin()+ k);
     }
-       for(unsigned int j=0; j < rightChild.size(); j++){
-         cout << "right child at " << j  <<" " << rightChild.at(j)->get_type() << endl;
-       }
-       for(unsigned int j=0; j < leftChild.size(); j++){
-         cout << "left child at " << j  <<" " << leftChild.at(j)->get_type() << endl;
-       }
       k=0;
       i=0;
-      if (!command.empty()){
+      if (!command.empty()){//if connector found run connector
         if (command == "&&"){
           execute(rightChild);
           execute(leftChild);
@@ -112,9 +105,9 @@ void Execution::make_tree(){
         }
       }
       else{
-        execute(rightChild);
+        execute(rightChild);// if no connector only run left child
       }
-      rightChild.clear();
+      rightChild.clear();//clear all vectors
       leftChild.clear();
       command.clear();
     }

@@ -12,7 +12,7 @@ All bug reports can be sent to jwool003@ucr.edu and csant019@ucr.edu
 
 How to run the program:
 In terminal:
-1. git clone http://github.com/yourusername/rshell.git
+1. git clone https://github.com/csant019/rshell.git
 2. cd rshell
 3. make
 4. bin/rshell
@@ -36,5 +36,4 @@ Please enter a command:
 $
 
 Bugs:
-
-Connectors do not work
+If an invalid input was entered, and you want to exit immediately afterwards you have to enter "exit" multiple times, but usually only twice, to exit.
