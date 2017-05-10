@@ -19,11 +19,13 @@ In terminal:
 
 Summary:
 
-rshell attempts to mimic a bash-like terminal shell. rshell accepts bash command executables that exist in /bin
+rshell attempts to mimic a bash terminal shell. rshell accepts bash command executables that exist in /bin
 
 ls mimics the GNU ls command and is functional for the "-a", "-l", and "-R" flags.
 
 cp mimics the cp bash command.
+
+cat prints out file
 
 Functionality:
 
@@ -37,4 +39,5 @@ $
 
 Bugs:
 
-Connectors do not work
+Multiple exits required occasionally
+Multiple connectors not accepted
