@@ -1,0 +1,4 @@
+#cool
+ls && ls -a #hey
+#exit
+exit

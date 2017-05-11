@@ -27,7 +27,7 @@ rshell does virtually everything the bash shell does, save for some subtleties.
 For example, it will not perform the cd command.
 
 The following commands work as expected: ls (including  -a, -l, and -R),
-cp, cat, echo, printf, mkdir, rmdir. all git commands
+cp, cat, echo, printf, mkdir, rmdir. git
 
 Sample output as follows:
 
@@ -43,4 +43,3 @@ Bugs:
 2. If || is the second connector it will act as &&
 3. Doesn't allow mkdir s && ls && rmdir s (mkdir s && rmdir s works)
 4. Will not allow more than 2 connectors (throws out of range)
-5. does not pass any test .sh file case. I may have made those wrong

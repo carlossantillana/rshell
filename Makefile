@@ -10,9 +10,6 @@ $(EXEC): $(OBJECTS)
 %.o: %.cc
 		$(CC) -c $(CC_FLAGS) $< -o $@
 
-#bin: ./bin
-#		$(MKDIR_P) ./bin
-
 clean:
 		rm -rf $(EXEC) $(OBJECTS) ./bin
 		#rm -rf *~ *.o ./bin
