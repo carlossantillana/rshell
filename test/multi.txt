@@ -1,6 +1,5 @@
 echo ls and new directory
-ls && mkdir s
-echo ls and remove directory
+ls && mkdir s && echo ls and remove directory
 ls && rmdir s
 ls && echo ^^^ The new directory isn't there
 echo Goodbye && exit
