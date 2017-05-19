@@ -9,12 +9,12 @@
 class Connector: public RShell //No longer child of execute
 {
 private:
-    RShell *left; //Operation left of connector
-    RShell *right; //Operation right of connector
+    vector<RShell* > left; //Operations left of connector
+    vector<RShell* > right; //Operations right of connector
     string type; //Sets type of child
 public:
-  Connector(){}
-  ~Connector(){}
+    Connector(){}
+    ~Connector(){}
     string get_input() //Prevents abstraction, but does nothing
     {
       return "String";
