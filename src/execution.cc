@@ -118,8 +118,9 @@ void Execution::make_tree(){
     //---------------------------
       if (!command.empty()){//if connector found run connector
         if (command == "&&"){
-          execute(leftChild);
+          if (execute(leftChild)){
           execute(rightChild);
+          }
         }
         if (command == "||"){
           if (!execute(leftChild)){
