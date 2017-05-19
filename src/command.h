@@ -19,10 +19,6 @@ class Command: public RShell
         {
           return true;
         }
-        virtual string get_input() //Not really doing much
-        {
-          return "";
-        }
         string get_type() //Returns type for rshell comparisons
         {
           return type;

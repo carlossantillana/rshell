@@ -55,14 +55,11 @@ void Execution::set_commands(vector<RShell*> commandList)
   this->commandList = commandList;
 }
 
-string Execution::get_input()
-{
-  return "";
-}
 string Execution::get_type()
 {
   return "Execution";
 }
+
 //Converts vect of string ot vect of char pointers
 vector<char *> Execution::str_to_char(vector<RShell*> tree){
     vector<char *> vectChar;

@@ -25,7 +25,6 @@ public:
     bool get_foundTest();
     bool get_foundParenthesis();
     virtual bool execute();
-    virtual string get_input();
     vector<RShell*> get_commands();
     void clear();
     bool empty();

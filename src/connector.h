@@ -15,11 +15,6 @@ private:
 public:
     Connector(){}
     ~Connector(){}
-    string get_input() //Prevents abstraction, but does nothing
-    {
-      return "String";
-    }
-
     virtual string get_type() = 0; //Outputs type string
     virtual bool execute() = 0; //Pure virtual
 };

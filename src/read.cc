@@ -84,10 +84,6 @@ bool Read::execute(){
   return true;
 }
 
-string Read::get_input(){
-  return input;
-}
-
 void Read::set_input(string input){
   this->input = input;
 }

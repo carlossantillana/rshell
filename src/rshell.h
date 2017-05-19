@@ -19,7 +19,6 @@ public:
     RShell() {} //Default Constructor
     virtual ~RShell() {}// for memory management
     virtual bool execute() = 0; //pure virtual
-    virtual string get_input() = 0; //pure virtual
     virtual string get_type() {return type;} // pure virtual
 };
 

@@ -16,7 +16,6 @@ public:
     ~Execution();
     bool execute(){return true;}
     bool execute(vector<RShell*> tree);
-    string get_input();
     void set_commands(vector<RShell*> commandList);
     void make_tree();
     virtual string get_type();
