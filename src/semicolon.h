@@ -9,28 +9,34 @@
 class Semicolon : public Connector
 {
 private:
-	RShell *left;
-	RShell *right;
-	string type;
+	RShell* left; //Operation left of connector
+	RShell* right; //Operation right of connector
+	string type; //Sets type of child
 public:
 	Semicolon() //Defalut Constructor
 	: type(";")
 	{}
 
-	Semicolon(RShell *l, RShell *r) //Constructor
-	: left(l), right(r), type(";")
+	Semicolon(RShell* l) //Constructor
+	: left(l), type(";")
 	{}
 
+		~Semicolon(){
+			delete left;
+			delete right;
+		}
 	bool execute() //Returns true if one argument is true
 	{
+		bool exec = false;
 		if(left->execute() || right->execute())
 		{
-			return true;
+			exec = true;
 		}
 		else
 		{
-			return false;
+			exec = false;
 		}
+		return exec;
 	}
 
 	string get_type()

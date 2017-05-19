@@ -9,15 +9,15 @@
 class Or : public Connector
 {
 private:
-	RShell *left;
-	RShell *right;
-	string type;
+	RShell* left; //Operation left of connector
+	RShell* right; //Operation right of connector
+	string type; //Sets type of child
 public:
 	Or()  //Default Constructor
 	: type("||")
 	{}
-	Or(RShell *l, RShell *r) //Constructor
-	: left(l), right(r), type("||")
+	Or(RShell* l) //Constructor
+	: left(l), type("||")
 	{}
 	~Or(){
 		delete left;
@@ -25,14 +25,16 @@ public:
 	}
 	bool execute() //Returns true if one argument is true
 	{
+		bool exec = false;
 		if(left->execute() || right->execute())
 		{
-			return true;
+			exec = true;
 		}
 		else
 		{
-			return false;
+			exec = false;
 		}
+		return exec;
 	}
 
 	string get_type()

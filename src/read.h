@@ -26,6 +26,7 @@ public:
     void clear();
     bool empty();
     virtual string get_type();
+    virtual void set_right_child(RShell* r){r->get_type();};
 };
 
 #endif
