@@ -77,18 +77,19 @@ vector<char *> Execution::str_to_char(vector<RShell*> tree){
     return vectChar;
 }
 
-
 void Execution::make_tree(){
-    vector<RShell*> rightChild;
+  make_tree(commandList);
+}
+void Execution::make_tree(vector<RShell*>){
     vector<RShell*> leftChild;
     string command = "";
-    //---------------------------
+    //---------------------------------------------------
     cout << "printing entire tree\n";
     for(unsigned int j=0; j < commandList.size(); j++){
       cout <<  j <<": " << commandList.at(j)->get_type() << endl;
     }
     cout << "finished printing entire tree\n\n";
-  unsigned int i=0, k=1;
+  unsigned int i=0;
   while (i < commandList.size()){
       while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
       {//fills left child
@@ -96,48 +97,18 @@ void Execution::make_tree(){
         i++;
       }
       commandList.erase(commandList.begin(), commandList.begin()+ i);
-      if (i < commandList.size()){//if i hasnt already iterated through entirerty of list
-        while(k < commandList.size() && commandList.at(k)->get_type() != "&&" && commandList.at(k)->get_type() != "||" && commandList.at(k)->get_type() != ";")
-        {// if left child had a connector fill right child
-          rightChild.push_back(commandList.at(k));
-          k++;
-        }
-        command = commandList.front()->get_type();
-        commandList.erase(commandList.begin(), commandList.begin()+ k-1);
       }
-      //---------------------------
+      //--------------------------------------------------
       cout << "printing left child\n";
       for(unsigned int j=0; j < leftChild.size(); j++){
         cout <<  j <<": " << leftChild.at(j)->get_type() << endl;
       }
       cout << "finished printing left child\n\n";
-
-      cout << "printing right child\n";
-      for(unsigned int j=0; j < rightChild.size(); j++){
-        cout <<  j <<": " << rightChild.at(j)->get_type() << endl;
-      }
-      cout << "finished printing right child\n\n";
     //---------------------------
-      if (!command.empty()){//if connector found run connector
-        if (command == "&&"){
-          execute(leftChild);
-          execute(rightChild);
-        }
-        if (command == "||"){
-          if (!execute(leftChild)){
-            execute(rightChild);
-          }
-        }
-        if (command == ";"){
-          execute(leftChild);
-          execute(rightChild);
-        }
-      }
-      else{
-        execute(leftChild);// if no connector only run left child
-      }
+      execute(leftChild);
       leftChild.clear();//clear all vectors
-      rightChild.clear();
       command.clear();
-    }
+      while (!commandList.empty()){
+        make_tree(commandList);
+      }
 }
