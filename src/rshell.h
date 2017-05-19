@@ -22,6 +22,8 @@ public:
     virtual string get_input() = 0; //pure virtual
     virtual string get_type() {return type;} // pure virtual
     virtual void set_right_child(RShell* r)=0;
+    virtual RShell* get_left()=0;
+    virtual RShell* get_right()=0;
   };
 
 #endif

@@ -12,6 +12,7 @@
 #include "or.h"
 #include "semicolon.h"
 
+
 Execution::~Execution() {
     for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
     {
@@ -19,35 +20,20 @@ Execution::~Execution() {
     }
     commandList.clear();
 }
-bool Execution::execute(vector<RShell*> tree)
+bool Execution::execute(RShell* tree)
 {
-  if (tree.at(0) == NULL || tree.at(0)->get_type() == "exit")//makes sure exit quits
-    return false;
-
+  if (tree->get_type() != "&&" || tree->get_type() != "||" || tree->get_type() != ";" ){
+      if (tree == NULL || tree->get_type() == "exit")//makes sure exit quits
+        return false;
+}
   bool ret_val = true;
-  vector<char *> argv = str_to_char(tree);//converts vect of string to vect of char* for execvp
-  argv.push_back(NULL);
-	pid = fork();
-  if (pid == 0){//child commandList.at(0)->get_type().c_str()
-    if (execvp(argv[0], argv.data()) == -1){// runs command
-      perror("execvp");
-      ret_val = false;
-    }
-  }
-  if (pid > 0){//parent
-    if (wait(0) == -1){
-      perror("wait");
-      ret_val = false;
-    }
 
-  }
-  //memory management
-  for (vector<char* >::iterator iter = argv.begin() ; iter != argv.end(); ++iter)
-  {
-    delete (*iter);
-  }
-  argv.clear();
-  return ret_val;
+    if (tree)
+    {
+        execute(tree->get_left());
+        execute(tree->get_right());
+    }
+    return ret_val;
 }
 
 void Execution::set_commands(vector<RShell*> commandList)
@@ -99,7 +85,7 @@ vector<RShell*>  Execution::prep_tree(){
         }
         commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
         i=0;
-          Command* child = new Command(children);
+          RShell* child = new Command(children);
         if (commandList.front()->get_type() == "&&"){
           And* anding = new And(child);
           ordered_connectors.push_back(anding);

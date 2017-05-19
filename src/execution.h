@@ -5,6 +5,7 @@
 #define __EXECUTION_H__
 
 #include "rshell.h"
+#include "connector.h"
 #include "command.h"
 class Command;
 
@@ -18,7 +19,7 @@ public:
     Execution(){}
     ~Execution();
     bool execute(){return true;}
-    bool execute(vector<RShell*> tree);
+    bool execute(RShell* tree);
     string get_input();
     void set_commands(vector<RShell*> commandList);
     vector<RShell*>  prep_tree();
@@ -26,6 +27,8 @@ public:
     virtual string get_type();
     vector<char *> str_to_char(vector<RShell*> tree);
     virtual void set_right_child(RShell* r){r->get_type();};
+    virtual RShell* get_left(){return commandList.at(0);};
+    virtual RShell* get_right(){return commandList.at(0);};
 };
 
 #endif
