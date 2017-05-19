@@ -39,6 +39,9 @@ class Command: public Connector
       {
         bool ret_val= true;
         vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
+        for (unsigned int i=0; i < argv.size(); i++){
+          cout << argv.at(i) << endl;
+        }
         argv.push_back(NULL);
         pid = fork();
         if (pid == 0){//child commandList.at(0)->get_type().c_str()
