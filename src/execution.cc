@@ -64,8 +64,7 @@ string Execution::get_type()
   return "Execution";
 }
 //Converts vect of string ot vect of char pointers
-vector<char *> Execution::str_to_char(vector<RShell*> tree)
-{
+vector<char *> Execution::str_to_char(vector<RShell*> tree){
     vector<char *> vectChar;
 
     for(unsigned int  i = 0; i < tree.size(); ++i){
@@ -83,6 +82,7 @@ void Execution::make_tree(){
     vector<RShell*> rightChild;
     vector<RShell*> leftChild;
     string command = "";
+
   unsigned int i=0, k=1;
   while (i < commandList.size()){
       while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
@@ -98,8 +98,9 @@ void Execution::make_tree(){
           k++;
         }
         command = commandList.front()->get_type();
-        commandList.erase(commandList.begin(), commandList.begin()+ k);
-    }
+        commandList.erase(commandList.begin(), commandList.begin()+ k-1);
+      }
+
       if (!command.empty()){//if connector found run connector
         if (command == "&&"){
           execute(rightChild);
