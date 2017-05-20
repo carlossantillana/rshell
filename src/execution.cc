@@ -32,7 +32,7 @@ bool Execution::execute(RShell* tree){
         return false;
   }
   bool ret_val = true;
-    cout << "inside execute\n";
+  cout << "inside execute\n";
   cout << "left: " << tree->get_left()->get_type()<< flush << endl;
   if (tree->get_left()->get_type() == "command"){
     tree->get_left()->execute();
