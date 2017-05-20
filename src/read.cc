@@ -7,11 +7,13 @@
 #include "or.h"
 #include "semicolon.h"
 #include "command.h"
+#include "test.h"
+
 using namespace boost;
 
-Read::Read(): found(false){}
+Read::Read(): foundExit(false), foundTest(false), foundParenthesis(false) {}
 
-Read::Read(string i) : input(i), found(false){}
+Read::Read(string i) : input(i), foundExit(false), foundTest(false), foundParenthesis(false){}
 
 Read::~Read(){
   for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -24,7 +26,7 @@ Read::~Read(){
 void Read::par(){
   string tmp;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-    boost::char_separator<char> sep(" ","#;");//list of delimiters to check
+    boost::char_separator<char> sep(" ","#;[]");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector
@@ -32,6 +34,14 @@ void Read::par(){
         if (tmp == "#"){//Breaks if #
           break;
         }
+        else if (tmp == "test"){
+          Test* testing = new Test;
+          commandList.push_back(testing);
+        }
+        // else if (tmp == "["){
+        //   cout << "Create test\n";
+        //   break;
+        //}
         else if (tmp == "&&"){
           And* anding = new And;
           commandList.push_back(anding);
@@ -46,7 +56,7 @@ void Read::par(){
         }
         else {
           if (tmp == "exit"){
-            found = true;
+            foundExit = true;
           }
           Command* parse = new Command(tmp);
           commandList.push_back(parse);//pushes string to vector
@@ -55,22 +65,23 @@ void Read::par(){
 
 }
 
-bool Read::get_found(){
-  return this->found;
+bool Read::get_foundExit(){
+  return this->foundExit;
 }
+
+bool Read::get_foundTest(){
+  return this->foundTest;
+}
+
+bool Read::get_foundParenthesis(){
+  return this->foundParenthesis;
+}
+
 string Read::get_type(){
   return "read";
 }
 bool Read::execute(){
   return true;
-}
-
-string Read::get_input(){
-  return input;
-}
-
-void Read::set_input(string input){
-  this->input = input;
 }
 vector<RShell*> Read::get_commands(){
   return commandList;

@@ -19,8 +19,7 @@ public:
     RShell() {} //Default Constructor
     virtual ~RShell() {}// for memory management
     virtual bool execute() = 0; //pure virtual
-    virtual string get_input() = 0; //pure virtual
-    virtual string get_type() {return type;} // pure virtual
+    virtual string get_type() {return type;} // virtual
     virtual void set_right_child(RShell* r)=0;
     virtual RShell* get_left()=0;
     virtual RShell* get_right()=0;

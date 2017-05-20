@@ -13,16 +13,11 @@ private:
     RShell* right; //Operation right of connector
     string type; //Sets type of child
 public:
-  Connector(){}
-  ~Connector(){
+    Connector(){}
+    ~Connector(){
     delete left;
     delete right;
-  }
-    string get_input() //Prevents abstraction, but does nothing
-    {
-      return "String";
     }
-
     virtual string get_type() = 0; //Outputs type string
     virtual bool execute() = 0; //Pure virtual
     virtual void set_right_child(RShell* r){

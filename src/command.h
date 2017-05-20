@@ -19,28 +19,30 @@ class Command: public Connector
         RShell* right; //Operation right of connector
         string type;// command and arguement list
         vector<RShell*> command;
-            pid_t pid;
+    	pid_t pid;
     public:
-      Command(string t) //Constructor reads in command type
-      :type(t)
-      {}
-
-      Command(string t, vector<RShell*> c) //Constructor reads in command type
-      : type(t), command(c)
-      {}
-
-      Command(vector<RShell*> c) //Constructor reads in command type
-      : type("command"),command(c)
-      {}
-      Command() //Constructor reads in command type
-      : type("command")
-      {}
-      ~Command(){
-      for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
-      {
+    Command(string t) //Constructor reads in command type
+    :type(t)
+    {}
+    Command(string t, vector<RShell*> c) //Constructor reads in command type
+    : type(t), command(c)
+    {}
+    Command(vector<RShell*> c) //Constructor reads in command type
+    : type("command"),command(c)
+    {}
+    Command() //Constructor reads in command type
+    : type("command")
+    {}
+    ~Command(){
+    for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
+    {
         delete (*iter);
-      }
-      command.clear();
+    }
+    	command.clear();
+    }
+    string get_type() //Returns type for rshell comparisons
+    {
+	return type;
     }
     virtual bool execute() //Returns true if command exists
     {
@@ -56,7 +58,6 @@ class Command: public Connector
           perror("execvp");
           ret_val = false;
         }
-      }
       if (pid > 0){//parent
         if (wait(0) == -1){
           perror("wait");
@@ -71,14 +72,6 @@ class Command: public Connector
       }
       argv.clear();
       return ret_val;
-    }
-    virtual string get_input() //Not really doing much
-    {
-      return "";
-    }
-    string get_type() //Returns type for rshell comparisons
-    {
-      return type;
     }
     void add_command(RShell* r){
       command.push_back(r);

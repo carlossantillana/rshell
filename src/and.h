@@ -11,13 +11,15 @@ class And : public Connector //Conector is the base of operators
 private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
-	string type; //Sets type of child
+	string type; //Sets type of connector
 public:
 	And() //Default Constructor
 	: type("&&")
 	{}
-
-	And(RShell* l) //RShell Constructor
+	And(RShell* l, RShell* r) //RShell Constructor for two children
+	: left(l), right(r), type("&&")
+	{}
+	And(RShell* l) //RShell Constructor for one child
 	: left(l), type("&&")
 	{}
 	~And(){

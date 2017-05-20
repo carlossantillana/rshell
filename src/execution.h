@@ -7,6 +7,7 @@
 #include "rshell.h"
 #include "connector.h"
 #include "command.h"
+
 class Command;
 
 class Execution: public RShell
@@ -20,7 +21,6 @@ public:
     ~Execution();
     bool execute();
     bool execute(RShell* tree);
-    string get_input();
     void set_commands(vector<RShell*> commandList);
     vector<RShell*>  prep_tree();
     void make_tree();
