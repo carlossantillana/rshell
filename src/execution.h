@@ -18,7 +18,7 @@ private:
 public:
     Execution(){}
     ~Execution();
-    bool execute(){return true;}
+    bool execute();
     bool execute(RShell* tree);
     string get_input();
     void set_commands(vector<RShell*> commandList);

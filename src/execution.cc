@@ -20,16 +20,30 @@ Execution::~Execution() {
     }
     commandList.clear();
 }
-bool Execution::execute(RShell* tree)
-{
+
+bool Execution::execute(){
+    execute(tree);
+    return true;
+}
+
+bool Execution::execute(RShell* tree){
   if (tree->get_type() != "&&" || tree->get_type() != "||" || tree->get_type() != ";" ){
       if (tree == NULL || tree->get_type() == "exit")//makes sure exit quits
         return false;
-}
+  }
   bool ret_val = true;
-
+    cout << "inside execute\n";
+  cout << "left: " << tree->get_left()->get_type()<< flush << endl;
+  if (tree->get_left()->get_type() == "command"){
+    tree->get_left()->execute();
+  }
+    cout << "right: " << tree->get_right()->get_type()<< flush << endl;
+  if (tree->get_right()->get_type() == "command"){
+    tree->get_right()->execute();
+  }
     if (tree)
     {
+        cout << "In execute\n";
         execute(tree->get_left());
         execute(tree->get_right());
     }
