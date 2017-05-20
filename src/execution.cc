@@ -12,6 +12,7 @@
 #include "or.h"
 #include "semicolon.h"
 
+
 Execution::~Execution() {
     for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
     {
@@ -19,35 +20,20 @@ Execution::~Execution() {
     }
     commandList.clear();
 }
-bool Execution::execute(vector<RShell*> tree)
+bool Execution::execute(RShell* tree)
 {
-  if (tree.at(0) == NULL || tree.at(0)->get_type() == "exit")//makes sure exit quits
-    return false;
-
+  if (tree->get_type() != "&&" || tree->get_type() != "||" || tree->get_type() != ";" ){
+      if (tree == NULL || tree->get_type() == "exit")//makes sure exit quits
+        return false;
+}
   bool ret_val = true;
-  vector<char *> argv = str_to_char(tree);//converts vect of string to vect of char* for execvp
-  argv.push_back(NULL);
-	pid = fork();
-  if (pid == 0){//child commandList.at(0)->get_type().c_str()
-    if (execvp(argv[0], argv.data()) == -1){// runs command
-      perror("execvp");
-      ret_val = false;
-    }
-  }
-  if (pid > 0){//parent
-    if (wait(0) == -1){
-      perror("wait");
-      ret_val = false;
-    }
 
-  }
-  //memory management
-  for (vector<char* >::iterator iter = argv.begin() ; iter != argv.end(); ++iter)
-  {
-    delete (*iter);
-  }
-  argv.clear();
-  return ret_val;
+    if (tree)
+    {
+        execute(tree->get_left());
+        execute(tree->get_right());
+    }
+    return ret_val;
 }
 
 void Execution::set_commands(vector<RShell*> commandList)
@@ -61,82 +47,88 @@ string Execution::get_type()
 }
 
 //Converts vect of string ot vect of char pointers
-vector<char *> Execution::str_to_char(vector<RShell*> tree){
+vector<char *> Execution::str_to_char(vector<RShell*> vec){
     vector<char *> vectChar;
 
-    for(unsigned int  i = 0; i < tree.size(); ++i){
+    for(unsigned int  i = 0; i < vec.size(); ++i){
         char *tmp;
-        tmp = new char[tree[i]->get_type().size() + 1];
-        memcpy(tmp, tree[i]->get_type().c_str(), tree[i]->get_type().size() + 1);
+        tmp = new char[vec[i]->get_type().size() + 1];
+        memcpy(tmp, vec[i]->get_type().c_str(), vec[i]->get_type().size() + 1);
 
         vectChar.push_back(tmp);
     }
     return vectChar;
 }
+vector<RShell*>  Execution::prep_tree(){
+    vector<RShell*> children;
+    vector<RShell*> ordered_connectors;
+    unsigned int i=0;
+    bool firstCommand = true;
+    while (!commandList.empty()){
+      //-----------------------------------------------------------------
+      cout << "printing entire command list\n";
+      for(unsigned int j=0; j < commandList.size(); j++){
+        cout <<  j <<": " << commandList.at(j)->get_type() << endl;
+      }
+      cout << "finished printing command list\n\n";
+      //-----------------------------------------------------------------
 
 
+        while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
+        {//fills left child
+          children.push_back(commandList.at(i));
+          i++;
+        }
+        commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
+        i=0;
+          RShell* child = new Command(children);
+        if (commandList.front()->get_type() == "&&"){
+          And* anding = new And(child);
+          ordered_connectors.push_back(anding);
+        }
+        else if(commandList.front()->get_type() == "||"){
+          Or* oring = new Or(child);
+          ordered_connectors.push_back(oring);
+        }
+        else if(commandList.front()->get_type() == ";"){
+          Semicolon* semying = new Semicolon(child);
+          ordered_connectors.push_back(semying);
+        }
+        else{
+            if (firstCommand == true){
+              child->execute();
+            }
+            else
+              ordered_connectors.at(ordered_connectors.size()-1)->set_right_child(child);
+          }
+        children.clear();
+        delete child;
+        if (commandList.size() > 1 )
+          commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
+        firstCommand = false;
+        //-------------------------------------------------------------
+        cout << "printing commands Left \n";
+        for(unsigned int j=0; j < commandList.size(); j++){
+          cout <<  j <<": " << commandList.at(j)->get_type() << endl;
+        }
+        cout << "finished printing commandsLeft\n\n";
+        //---------------------------
+    }
+    commandList.clear();//clear all vectors
+
+    return ordered_connectors;
+}
 void Execution::make_tree(){
-    vector<RShell*> rightChild;
-    vector<RShell*> leftChild;
-    string command = "";
-    //---------------------------
-    cout << "printing entire tree\n";
-    for(unsigned int j=0; j < commandList.size(); j++){
-      cout <<  j <<": " << commandList.at(j)->get_type() << endl;
-    }
-    cout << "finished printing entire tree\n\n";
-  unsigned int i=0, k=1;
-  while (i < commandList.size()){
-      while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
-      {//fills left child
-        leftChild.push_back(commandList.at(i));
-        i++;
-      }
-      commandList.erase(commandList.begin(), commandList.begin()+ i);
-      if (i < commandList.size()){//if i hasnt already iterated through entirerty of list
-        while(k < commandList.size() && commandList.at(k)->get_type() != "&&" && commandList.at(k)->get_type() != "||" && commandList.at(k)->get_type() != ";")
-        {// if left child had a connector fill right child
-          rightChild.push_back(commandList.at(k));
-          k++;
-        }
-        command = commandList.front()->get_type();
-        commandList.erase(commandList.begin(), commandList.begin()+ k-1);
-      }
-
-      //---------------------------
-      cout << "printing left child\n";
-      for(unsigned int j=0; j < leftChild.size(); j++){
-        cout <<  j <<": " << leftChild.at(j)->get_type() << endl;
-      }
-      cout << "finished printing left child\n\n";
-
-      cout << "printing right child\n";
-      for(unsigned int j=0; j < rightChild.size(); j++){
-        cout <<  j <<": " << rightChild.at(j)->get_type() << endl;
-      }
-      cout << "finished printing right child\n\n";
-    //---------------------------
-      if (!command.empty()){//if connector found run connector
-        if (command == "&&"){
-          if (execute(leftChild)){
-          execute(rightChild);
-          }
-        }
-        if (command == "||"){
-          if (!execute(leftChild)){
-            execute(rightChild);
-          }
-        }
-        if (command == ";"){
-          execute(leftChild);
-          execute(rightChild);
+    vector<RShell*>  ordered_connectors = prep_tree();
+    cout << "Begining of make tree\n";
+    cout << ordered_connectors.size() << endl;
+    if (ordered_connectors.size() > 0){
+      for (unsigned int i=0; !ordered_connectors.empty() && i < ordered_connectors.size()-1 ; i++){
+        if (ordered_connectors.at(i)->get_type() == "&&" || ordered_connectors.at(i)->get_type() == "||" || ordered_connectors.at(i)->get_type() == ";" ){
+          ordered_connectors.at(i)->set_right_child(ordered_connectors.at(i+1));
         }
       }
-      else{
-        execute(leftChild);// if no connector only run left child
-      }
-      leftChild.clear();//clear all vectors
-      rightChild.clear();
-      command.clear();
-    }
+      tree = ordered_connectors.at(0);
+  }
+    cout << "Finished make tree\n";
 }

@@ -9,14 +9,22 @@
 class Connector: public RShell //No longer child of execute
 {
 private:
-    vector<RShell* > left; //Operations left of connector
-    vector<RShell* > right; //Operations right of connector
+    RShell* left; //Operation left of connector
+    RShell* right; //Operation right of connector
     string type; //Sets type of child
 public:
     Connector(){}
-    ~Connector(){}
+    ~Connector(){
+    delete left;
+    delete right;
+    }
     virtual string get_type() = 0; //Outputs type string
     virtual bool execute() = 0; //Pure virtual
+    virtual void set_right_child(RShell* r){
+      right = r;
+    }
+    virtual RShell* get_left(){return left;}
+    virtual RShell* get_right(){return right;}
 };
 
 #endif

@@ -20,7 +20,6 @@ public:
     Read(string i);
     ~Read();
     void par();
-    void set_input(string input);
     bool get_foundExit();
     bool get_foundTest();
     bool get_foundParenthesis();
@@ -29,6 +28,9 @@ public:
     void clear();
     bool empty();
     virtual string get_type();
+    virtual void set_right_child(RShell* r){r->get_type();};
+    virtual RShell* get_left(){return commandList.at(0);};
+    virtual RShell* get_right(){return commandList.at(0);};
 };
 
 #endif

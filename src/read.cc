@@ -83,10 +83,6 @@ string Read::get_type(){
 bool Read::execute(){
   return true;
 }
-
-void Read::set_input(string input){
-  this->input = input;
-}
 vector<RShell*> Read::get_commands(){
   return commandList;
 }
