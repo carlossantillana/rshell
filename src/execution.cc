@@ -41,14 +41,11 @@ void Execution::set_commands(vector<RShell*> commandList)
   this->commandList = commandList;
 }
 
-string Execution::get_input()
-{
-  return "";
-}
 string Execution::get_type()
 {
   return "Execution";
 }
+
 //Converts vect of string ot vect of char pointers
 vector<char *> Execution::str_to_char(vector<RShell*> vec){
     vector<char *> vectChar;
@@ -67,7 +64,6 @@ vector<RShell*>  Execution::prep_tree(){
     vector<RShell*> ordered_connectors;
     unsigned int i=0;
     bool firstCommand = true;
-
     while (!commandList.empty()){
       //-----------------------------------------------------------------
       cout << "printing entire command list\n";

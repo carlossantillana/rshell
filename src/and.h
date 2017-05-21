@@ -12,6 +12,7 @@ private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
+
 public:
 	And() //Default Constructor
 	: type("&&")
@@ -19,6 +20,10 @@ public:
 
 	And(RShell* l) //RShell Constructor
 	: left(l), type("&&")
+
+	And(RShell* l, RShell* r) //RShell Constructor
+	: left(l), right(r), type("&&")
+
 	{}
 	~And(){
 		delete left;

@@ -41,5 +41,3 @@ $
 Bugs:
 1. Multiple exits required occasionally
 2. If || is the second connector it will act as &&
-3. Doesn't allow mkdir s && ls && rmdir s (mkdir s && rmdir s works)
-4. Will not allow more than 2 connectors (throws out of range)

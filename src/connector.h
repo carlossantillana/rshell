@@ -22,7 +22,6 @@ public:
     {
       return "String";
     }
-
     virtual string get_type() = 0; //Outputs type string
     virtual bool execute() = 0; //Pure virtual
     virtual void set_right_child(RShell* r){
