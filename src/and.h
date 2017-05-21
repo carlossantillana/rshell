@@ -20,7 +20,7 @@ public:
 
 	And(RShell* l) //RShell Constructor
 	: left(l), type("&&")
-
+	{}
 	And(RShell* l, RShell* r) //RShell Constructor
 	: left(l), right(r), type("&&")
 

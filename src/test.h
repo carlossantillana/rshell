@@ -135,6 +135,10 @@ class Test: public RShell
             }
             return vectChar;
         }
+        void set_right_child(RShell* r){r->get_type();}
+        RShell* get_left(){return commandList.at(0);}
+        RShell* get_right(){return commandList.at(0);}
 };
+
 
 #endif
