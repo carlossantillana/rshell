@@ -239,10 +239,12 @@ bool Execution::execute(){
 
 bool Execution::execute(vector<RShell*> tree)
 {
-  if (tree.at(0) == NULL)//prevents empty input
+  if (tree.size() == 0)//allows for single command
     return false;
   bool ret_val = true;
-  ret_val = tree.at(0)->execute();//executes tree
+
+  if (tree.at(0) != NULL)
+    ret_val = tree.at(0)->execute();//executes tree
   return ret_val;
 }
 
