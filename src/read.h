@@ -12,6 +12,7 @@ class Read: public RShell
 private:
     string input;
     bool foundExit;
+    bool firstExit;
     bool foundTest;
     bool foundParenthesis;
     vector<RShell*> commandList;
@@ -22,6 +23,7 @@ public:
     void par();
     void set_input(string input);
     bool get_foundExit();
+    bool get_firstExit();
     bool get_foundTest();
     bool get_foundParenthesis();
     virtual bool execute();
@@ -29,6 +31,10 @@ public:
     void clear();
     bool empty();
     virtual string get_type();
+    virtual void set_right_child(RShell* r){r->get_type();};
+    virtual RShell* get_left(){return commandList.at(0);};
+    virtual RShell* get_right(){return commandList.at(0);};
+  	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif

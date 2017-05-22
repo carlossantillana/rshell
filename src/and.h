@@ -9,34 +9,50 @@
 class And : public Connector //Conector is the base of operators
 {
 private:
-	RShell* left;
-	RShell* right;
-	string type;
+	RShell* left; //Operation left of connector
+	RShell* right; //Operation right of connector
+	string type; //Sets type of child
+
 public:
 	And() //Default Constructor
 	: type("&&")
 	{}
 
-	And(RShell* l, RShell* r) //RShell Constructor
-	: left(l), right(r), type("&&")
+	And(RShell* l) //RShell Constructor
+	: left(l), type("&&")
 	{}
 
+	And(RShell* l, RShell* r) //RShell Constructor
+	: left(l), right(r), type("&&")
+
+	{}
+
+	~And(){
+		delete left;
+		delete right;
+	}
 	bool execute() //Returns true if both sides are true
 	{
+		bool exec = false;
 		if(left->execute() && right->execute())
 		{
-			return true;
+			exec = true;
 		}
 		else
 		{
-			return false;
+			exec = false;
 		}
+		return exec;
 	}
 
 	string get_type()
 	{
 		return type;
 	}
+  virtual void set_right_child(RShell* r){this->right = r;}
+	RShell* get_left(){return left;}
+	RShell* get_right(){return right;}
+	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif
