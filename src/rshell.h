@@ -19,9 +19,15 @@ public:
     virtual ~RShell() {}// for memory management
     virtual bool execute() = 0; //pure virtual
     virtual string get_type() {return type;} // pure virtual
-    virtual void set_right_child(RShell* r)=0;
-    virtual RShell* get_left()=0;
-    virtual RShell* get_right()=0;
+    virtual void set_right_child(RShell* r) = 0;
+    virtual RShell* get_left() = 0;
+    virtual RShell* get_right() = 0;
+  	virtual string get_input()= 0;//Prevents abstraction
+    virtual vector<RShell*> get_commandList(){// delete later
+      vector<RShell*> command;
+      command.push_back(this);
+      return command;
+    }
   };
 
 #endif

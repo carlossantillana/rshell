@@ -21,10 +21,12 @@ public:
 	And(RShell* l) //RShell Constructor
 	: left(l), type("&&")
 	{}
+
 	And(RShell* l, RShell* r) //RShell Constructor
 	: left(l), right(r), type("&&")
 
 	{}
+
 	~And(){
 		delete left;
 		delete right;
@@ -47,6 +49,10 @@ public:
 	{
 		return type;
 	}
+
+	RShell* get_left(){return left;}
+	RShell* get_right(){return right;}
+	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif

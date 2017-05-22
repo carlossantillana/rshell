@@ -41,6 +41,7 @@ public:
 	{
 		return type;
 	}
+	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif

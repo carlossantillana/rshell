@@ -18,9 +18,8 @@ private:
 public:
     Execution(){}
     ~Execution();
-    bool execute(){return true;}
+    bool execute();
     bool execute(RShell* tree);
-    string get_input();
     void set_commands(vector<RShell*> commandList);
     vector<RShell*>  prep_tree();
     void make_tree();
@@ -29,6 +28,7 @@ public:
     virtual void set_right_child(RShell* r){r->get_type();};
     virtual RShell* get_left(){return commandList.at(0);};
     virtual RShell* get_right(){return commandList.at(0);};
+  	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif

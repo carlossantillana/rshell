@@ -18,23 +18,21 @@ class Command: public Connector
         RShell* left; //Operation left of connector
         RShell* right; //Operation right of connector
         string type;// command and arguement list
+        string input;// type of command for parsing
         vector<RShell*> command;
             pid_t pid;
     public:
-      Command(string t) //Constructor reads in command type
-      :type(t)
-      {}
-
-      Command(string t, vector<RShell*> c) //Constructor reads in command type
-      : type(t), command(c)
-      {}
-
-      Command(vector<RShell*> c) //Constructor reads in command type
-      : type("command"),command(c)
-      {}
       Command() //Constructor reads in command type
       : type("command")
       {}
+      Command(string i) //Constructor reads in command type
+      : type("command"), input(i)
+      {}
+
+      Command(vector<RShell*> c) //Constructor reads in command type
+      : type("command"), command(c)
+      {}
+
       ~Command(){
       for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
       {
@@ -45,7 +43,8 @@ class Command: public Connector
     virtual bool execute() //Returns true if command exists
     {
       bool ret_val= true;
-      vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
+      vector<char *> argv = str_to_char(get_commandList());//converts vect of string to vect of char* for execvp
+      cout << "argv first element " << argv.at(0) << endl;
       for (unsigned int i=0; i < argv.size(); i++){
         cout << argv.at(i) << endl;
       }
@@ -74,7 +73,7 @@ class Command: public Connector
     }
     virtual string get_input() //Not really doing much
     {
-      return "";
+      return input;
     }
     string get_type() //Returns type for rshell comparisons
     {
@@ -82,6 +81,9 @@ class Command: public Connector
     }
     void add_command(RShell* r){
       command.push_back(r);
+    }
+    vector<RShell*> get_commandList(){
+      return command;
     }
     vector<char *> str_to_char(vector<RShell*> vec){
         vector<char *> vectChar;
