@@ -14,7 +14,7 @@ class Execution: public RShell
 {
 private:
     vector<RShell*> commandList;
-    RShell* tree;
+    vector<RShell*> tree;
     pid_t pid;
 public:
     Execution(){}
@@ -29,6 +29,7 @@ public:
     virtual void set_right_child(RShell* r){r->get_type();};
     virtual RShell* get_left(){return commandList.at(0);};
     virtual RShell* get_right(){return commandList.at(0);};
+  	virtual string get_input(){return "";}//Prevents abstraction
 };
 
 #endif
