@@ -11,6 +11,7 @@
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
+#include "test.h"
 
 Execution::~Execution() {
     for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -80,11 +81,11 @@ void Execution::make_tree(){
     vector<RShell*> leftChild;
     string command = "";
     //---------------------------
-    cout << "printing entire tree\n";
-    for(unsigned int j=0; j < commandList.size(); j++){
-      cout <<  j <<": " << commandList.at(j)->get_type() << endl;
-    }
-    cout << "finished printing entire tree\n\n";
+    //cout << "printing entire tree\n";
+    //for(unsigned int j=0; j < commandList.size(); j++){
+    //  cout <<  j <<": " << commandList.at(j)->get_type() << endl;
+    //}
+    //cout << "finished printing entire tree\n\n";
   unsigned int i=0, k=1;
   while (i < commandList.size()){
       while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
@@ -102,37 +103,66 @@ void Execution::make_tree(){
         command = commandList.front()->get_type();
         commandList.erase(commandList.begin(), commandList.begin()+ k-1);
       }
-
       //---------------------------
-      cout << "printing left child\n";
-      for(unsigned int j=0; j < leftChild.size(); j++){
-        cout <<  j <<": " << leftChild.at(j)->get_type() << endl;
-      }
-      cout << "finished printing left child\n\n";
+      // cout << "printing left child\n";
+      // for(unsigned int j=0; j < leftChild.size(); j++){
+      //  cout <<  j <<": " << leftChild.at(j)->get_type() << endl;
+      // }
+      // cout << "finished printing left child\n\n";
 
-      cout << "printing right child\n";
-      for(unsigned int j=0; j < rightChild.size(); j++){
-        cout <<  j <<": " << rightChild.at(j)->get_type() << endl;
-      }
-      cout << "finished printing right child\n\n";
-    //---------------------------
+      //cout << "printing right child\n";
+      //for(unsigned int j=0; j < rightChild.size(); j++){
+      //  cout <<  j <<": " << rightChild.at(j)->get_type() << endl;
+      //}
+      //cout << "finished printing right child\n\n";
+      //---------------------------
       if (!command.empty()){//if connector found run connector
         if (command == "&&"){
           if (execute(leftChild)){
-          execute(rightChild);
+            if(rightChild.at(0)->get_type() == "test"
+            || rightChild.at(0)->get_type() == "Test" || rightChild.at(0)->get_type() == "[")
+            {
+              Test* testing = new Test(rightChild);
+              testing->execute();
+            }
+            else {
+              execute(rightChild);
+            }
           }
         }
         if (command == "||"){
           if (!execute(leftChild)){
-            execute(rightChild);
+            if(rightChild.at(0)->get_type() == "test"
+            || rightChild.at(0)->get_type() == "Test" || rightChild.at(0)->get_type() == "[")
+            {
+              Test* testing = new Test(rightChild);
+              testing->execute();
+            }
+            else {
+              execute(rightChild);
+            }
           }
         }
         if (command == ";"){
           execute(leftChild);
-          execute(rightChild);
+          if(rightChild.at(0)->get_type() == "test"
+          || rightChild.at(0)->get_type() == "Test" || rightChild.at(0)->get_type() == "[")
+          {
+            Test* testing = new Test(rightChild);
+            testing->execute();
+          }
+          else {
+            execute(rightChild);
+          }
         }
       }
       else{
+        if(leftChild.at(0)->get_type() == "test"
+        || leftChild.at(0)->get_type() == "Test" || leftChild.at(0)->get_type() == "[")
+        {
+          Test* testing = new Test(leftChild);
+          testing->execute();
+        }
         execute(leftChild);// if no connector only run left child
       }
       leftChild.clear();//clear all vectors

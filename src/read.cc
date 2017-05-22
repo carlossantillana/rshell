@@ -34,7 +34,7 @@ void Read::par(){
         if (tmp == "#"){//Breaks if #
           break;
         }
-        else if (tmp == "test"){
+        else if (tmp == "test" || tmp == "Test"){
           Test* testing = new Test;
           commandList.push_back(testing);
         }

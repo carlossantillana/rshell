@@ -13,12 +13,12 @@
 class Test: public RShell
 {
     private:
-        string type;// Test and arguement list
         vector<RShell*> commandList;
+        string type;// Test and arguement list
         bool e,f,d;
     public:
-
-        Test() :type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
+        Test() : type("test"), e(false), f(false), d(false) {}
+        Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
         ~Test(){}
         void set_commands(vector<RShell*> commandList)
         {
@@ -28,13 +28,19 @@ class Test: public RShell
         {
           char* c;
           string test = "test";
+          string bracket = "[";
           string eflag = "-e";
           string fflag = "-f";
           string dflag = "-d";
           struct stat sb;
-          cout << "\n\nERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n\n";
           vector<char *> argv = str_to_char(commandList);//converts vect of string to vect of char*
           //Base case
+          // cout << "\n" << argv.size() << endl << endl;
+          // for (unsigned int i = 0; i < argv.size(); i++)
+          // {
+          //   cout << argv.at(i) << endl;
+          // }
+          //cout << endl;
 	         if (argv.size() == 0)
 	         {
 		           cout << "(False)" << endl;
@@ -42,7 +48,7 @@ class Test: public RShell
 	         }
            else if (argv.at(0) == test)
 	         {
-		           if (argv.size() == 4)
+		           if (argv.size() == 3)
 		           {
 			              c = argv.at(2);
 			              if (argv.at(1) == eflag)
@@ -58,7 +64,7 @@ class Test: public RShell
 				                  d = true;
 			              }
 		           }
-		           else if (argv.size() == 3)
+		           else if (argv.size() == 2)
 		           {
 			              c = argv.at(1);
 			              e = true;
@@ -69,6 +75,35 @@ class Test: public RShell
 			              return false;
 		           }
 	         }
+           else if(argv.at(0) == bracket)
+           {
+             if (argv.size() == 4)
+             {
+                  c = argv.at(2);
+                  if (argv.at(1) == eflag)
+                  {
+                        e = true;
+                  }
+                  else if (argv.at(1) == fflag)
+                  {
+                        f = true;
+                  }
+                  else if (argv.at(1) == dflag)
+                  {
+                        d = true;
+                  }
+             }
+             else if (argv.size() == 3)
+             {
+                  c = argv.at(1);
+                  e = true;
+             }
+             else
+             {
+                  cout << "(False)" << endl;
+                  return false;
+             }
+           }
 
            stat(c, &sb);
 
@@ -98,25 +133,6 @@ class Test: public RShell
            }
            cout << "(False)\n";
            return false;
-          // for (unsigned i = 0; (i + 1) < commandList.size(); i++)
-          // {
-          //   if (commandList.at(i)->get_type() == "test")
-          //   {
-          //     if (commandList.at(i+1)->get_type() == "-f")
-          //     {
-          //       return true;
-          //     }
-          //     else if (commandList.at(i+1)->get_type() == "-d")
-          //     {
-          //       return true;
-          //     }
-          //     else
-          //     {
-          //       return true;
-          //     }
-          //   }
-          // }
-          // return false;
         }
         string get_type() //Returns type for rshell comparisons
         {
