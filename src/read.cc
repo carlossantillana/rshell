@@ -11,9 +11,9 @@
 
 using namespace boost;
 
-Read::Read(): foundExit(false), foundTest(false), foundParenthesis(false) {}
+Read::Read(): foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false) {}
 
-Read::Read(string i) : input(i), foundExit(false), foundTest(false), foundParenthesis(false){}
+Read::Read(string i) : input(i), foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false){}
 
 Read::~Read(){
   for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -25,6 +25,7 @@ Read::~Read(){
 
 void Read::par(){
   string tmp;
+  unsigned int count =0;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(" ","#;[]");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
@@ -56,17 +57,26 @@ void Read::par(){
         }
         else {
           if (tmp == "exit"){
+            if (count == 0){
+              firstExit = true;
+              return;
+            }
             foundExit = true;
           }
           Command* parse = new Command(tmp);
           commandList.push_back(parse);//pushes string to vector
         }
+        count++;
   }
 
 }
 
 bool Read::get_foundExit(){
   return this->foundExit;
+}
+
+bool Read::get_firstExit(){
+  return this->firstExit;
 }
 
 bool Read::get_foundTest(){

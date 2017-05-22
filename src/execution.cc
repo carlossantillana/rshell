@@ -22,34 +22,18 @@ Execution::~Execution() {
 }
 
 bool Execution::execute(){
-  execute(tree);
-  return true;
+  return execute(tree);
 }
 
-bool Execution::execute(RShell* tree)
+bool Execution::execute(vector<RShell*> tree)
 {
-    cout << "inside execute--------------------------- \n";
-  if (tree == NULL || tree->get_type() == "exit")//makes sure exit quits
+  if (tree.at(0) == NULL || tree.at(0)->get_input() == "exit")//makes sure exit quits
     return false;
   bool ret_val = true;
-       cout << tree->get_left()->get_commandList().at(0)->get_input() << endl;
-
-  if (tree->get_left() != NULL && tree->get_left()->get_type() == "command"){
-    tree->get_left()->execute();
-  }
-  if (tree->get_right() != NULL && tree->get_right()->get_type() == "command"){
-    tree->get_right()->execute();
-  }
-    if (tree->get_left() != NULL)
-    {
-      execute(tree->get_left());
-    }
-    if ( tree->get_right() != NULL)
-    {
-      execute(tree->get_right());
-    }
-    return ret_val;
+  tree.at(0)->execute();
+  return ret_val;
 }
+
 
 void Execution::set_commands(vector<RShell*> commandList)
 {
@@ -80,13 +64,6 @@ vector<RShell*>  Execution::prep_tree(){
     unsigned int i=0;
     bool firstCommand = true;
     while (!commandList.empty()){
-      //-----------------------------------------------------------------
-      // cout << "printing entire command list\n";
-      // for(unsigned int j=0; j < commandList.size(); j++){
-      //   cout <<  j <<": " << commandList.at(j)->get_type() << endl;
-      // }
-      // cout << "finished printing command list\n\n";
-      //-----------------------------------------------------------------
         while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
         {//fills left child
           children.push_back(commandList.at(i));
@@ -111,47 +88,26 @@ vector<RShell*>  Execution::prep_tree(){
             if (firstCommand == true){
               child->execute();
             }
-            else
+            else{
               ordered_connectors.at(ordered_connectors.size()-1)->set_right_child(child);
+            }
           }
         children.clear();
-        //delete child;
         if (commandList.size() > 1 )
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
         firstCommand = false;
-        //-------------------------------------------------------------
-        // cout << "printing commands Left \n";
-        // for(unsigned int j=0; j < commandList.size(); j++){
-        //   cout <<  j <<": " << commandList.at(j)->get_type() << endl;
-        // }
-        // cout << "finished printing commandsLeft\n\n";
-        //---------------------------
     }
     commandList.clear();//clear all vectors
-
     return ordered_connectors;
 }
 void Execution::make_tree(){
     vector<RShell*>  ordered_connectors = prep_tree();
-    for (unsigned int i=0; i < ordered_connectors.size(); i++){
-      cout << i << " " << ordered_connectors.at(i)->get_type() << endl;
-     if (ordered_connectors.at(i)->get_left() != NULL)
-       cout << ordered_connectors.at(i)->get_left()->get_commandList().at(0)->get_input() << endl;
-      if (ordered_connectors.at(i)->get_right() != NULL)
-       cout << ordered_connectors.at(i)->get_right()->get_commandList().at(0)->get_input() << endl;
-    }
-
-    cout << "Begining of make tree\n";
-    cout << ordered_connectors.size() << endl;
     if (ordered_connectors.size() > 0){
       for (unsigned int i=0; i < ordered_connectors.size()-1 ; i++){
         if (ordered_connectors.at(i)->get_type() == "&&" || ordered_connectors.at(i)->get_type() == "||" || ordered_connectors.at(i)->get_type() == ";" ){
-          cout << "inside make tree for loop\n";
-          cout << "ordered connector at " << i << " " << ordered_connectors.at(i)->get_type() << flush << endl;
           ordered_connectors.at(i)->set_right_child(ordered_connectors.at(i+1));
         }
       }
-      tree = ordered_connectors.at(0);
   }
-    cout << "Finished make tree\n";
+        tree = ordered_connectors;
 }

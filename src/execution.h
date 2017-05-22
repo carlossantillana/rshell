@@ -13,13 +13,13 @@ class Execution: public RShell
 {
 private:
     vector<RShell*> commandList;
-    RShell* tree;
+    vector<RShell*> tree;
     pid_t pid;
 public:
     Execution(){}
     ~Execution();
     bool execute();
-    bool execute(RShell* tree);
+    bool execute(vector<RShell*> tree);
     void set_commands(vector<RShell*> commandList);
     vector<RShell*>  prep_tree();
     void make_tree();

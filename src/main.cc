@@ -18,6 +18,9 @@ int main()
 		if (!input.empty()){//checks for empty string case
 	    read->set_input(input);
 	    read->par();
+			if (read->get_firstExit() == true){
+				break;
+			}
 			test->set_commands(read->get_commands());
 			execution->set_commands(read->get_commands());
 			execution->make_tree();

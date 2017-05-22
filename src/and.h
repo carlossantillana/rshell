@@ -34,7 +34,7 @@ public:
 	bool execute() //Returns true if both sides are true
 	{
 		bool exec = false;
-		if(left->execute() || right->execute())
+		if(left->execute() && right->execute())
 		{
 			exec = true;
 		}
@@ -49,7 +49,7 @@ public:
 	{
 		return type;
 	}
-
+  virtual void set_right_child(RShell* r){this->right = r;}
 	RShell* get_left(){return left;}
 	RShell* get_right(){return right;}
 	virtual string get_input(){return "";}//Prevents abstraction

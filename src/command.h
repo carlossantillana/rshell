@@ -43,11 +43,10 @@ class Command: public Connector
     virtual bool execute() //Returns true if command exists
     {
       bool ret_val= true;
-      vector<char *> argv = str_to_char(get_commandList());//converts vect of string to vect of char* for execvp
-      cout << "argv first element " << argv.at(0) << endl;
-      for (unsigned int i=0; i < argv.size(); i++){
-        cout << argv.at(i) << endl;
+      if (command.at(0)->get_input() == "exit"){
+        return false;
       }
+      vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
       argv.push_back(NULL);
       pid = fork();
       if (pid == 0){//child commandList.at(0)->get_type().c_str()
@@ -90,8 +89,8 @@ class Command: public Connector
 
         for(unsigned int  i = 0; i < vec.size(); ++i){
             char *tmp;
-            tmp = new char[vec[i]->get_type().size() + 1];
-            memcpy(tmp, vec[i]->get_type().c_str(), vec[i]->get_type().size() + 1);
+            tmp = new char[vec[i]->get_input().size() + 1];
+            memcpy(tmp, vec[i]->get_input().c_str(), vec[i]->get_input().size() + 1);
 
             vectChar.push_back(tmp);
         }
