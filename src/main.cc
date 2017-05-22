@@ -3,14 +3,12 @@
 
 #include "rshell.h"
 #include "read.h"
-#include "test.h"
 
 int main()
 {
 	string input;
 	Read* read = new Read;
 	Execution* execution = new Execution;
-	Test* test = new Test;
   while(!read->get_foundExit())
   {
   	cout << "$ ";
@@ -19,9 +17,8 @@ int main()
 	    read->set_input(input);
 	    read->par();
 			if (read->get_firstExit() == true){
-				break;
+					break;
 			}
-			test->set_commands(read->get_commands());
 			execution->set_commands(read->get_commands());
 			execution->make_tree();
 			execution->execute();

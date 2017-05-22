@@ -27,10 +27,10 @@ bool Execution::execute(){
 
 bool Execution::execute(vector<RShell*> tree)
 {
-  if (tree.at(0) == NULL || tree.at(0)->get_input() == "exit")//makes sure exit quits
+  if (tree.at(0) == NULL)//prevents empty input
     return false;
   bool ret_val = true;
-  tree.at(0)->execute();
+  ret_val = tree.at(0)->execute();//executes tree
   return ret_val;
 }
 
@@ -60,7 +60,6 @@ vector<char *> Execution::str_to_char(vector<RShell*> vec){
 }
 vector<RShell*>  Execution::prep_tree(){
     vector<RShell*> children;
-    vector<RShell*> ordered_connectors;
     unsigned int i=0;
     bool firstCommand = true;
     while (!commandList.empty()){
@@ -71,25 +70,27 @@ vector<RShell*>  Execution::prep_tree(){
         }
         commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
         i=0;
-        RShell* child = new Command(children);
+        RShell* child = new Command(children);//makes Rshell command object to put into connector
         if (commandList.front()->get_type() == "&&"){
           And* anding = new And(child);
-          ordered_connectors.push_back(anding);
+          tree.push_back(anding);
         }
         else if(commandList.front()->get_type() == "||"){
           Or* oring = new Or(child);
-          ordered_connectors.push_back(oring);
+          tree.push_back(oring);
         }
         else if(commandList.front()->get_type() == ";"){
           Semicolon* semying = new Semicolon(child);
-          ordered_connectors.push_back(semying);
+          tree.push_back(semying);
         }
         else{
+            //if only one input simply execute
             if (firstCommand == true){
               child->execute();
             }
             else{
-              ordered_connectors.at(ordered_connectors.size()-1)->set_right_child(child);
+              //if there is a hanging command, set it the last connector's right child
+              tree.at(tree.size()-1)->set_right_child(child);
             }
           }
         children.clear();
@@ -98,16 +99,15 @@ vector<RShell*>  Execution::prep_tree(){
         firstCommand = false;
     }
     commandList.clear();//clear all vectors
-    return ordered_connectors;
+    return tree;
 }
 void Execution::make_tree(){
-    vector<RShell*>  ordered_connectors = prep_tree();
-    if (ordered_connectors.size() > 0){
-      for (unsigned int i=0; i < ordered_connectors.size()-1 ; i++){
-        if (ordered_connectors.at(i)->get_type() == "&&" || ordered_connectors.at(i)->get_type() == "||" || ordered_connectors.at(i)->get_type() == ";" ){
-          ordered_connectors.at(i)->set_right_child(ordered_connectors.at(i+1));
+    vector<RShell*>  tree = prep_tree();// prepares tree
+    if (tree.size() > 0){//attaches right children to tree
+      for (unsigned int i=0; i < tree.size()-1 ; i++){
+        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||" || tree.at(i)->get_type() == ";" ){
+          tree.at(i)->set_right_child(tree.at(i+1));
         }
       }
   }
-        tree = ordered_connectors;
 }

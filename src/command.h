@@ -25,7 +25,7 @@ class Command: public Connector
       Command() //Constructor reads in command type
       : type("command")
       {}
-      Command(string i) //Constructor reads in command type
+      Command(string i) //Constructor reads in string type
       : type("command"), input(i)
       {}
 
@@ -49,7 +49,7 @@ class Command: public Connector
       vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
       argv.push_back(NULL);
       pid = fork();
-      if (pid == 0){//child commandList.at(0)->get_type().c_str()
+      if (pid == 0){
         if (execvp(argv[0], argv.data()) == -1){// runs command
           perror("execvp");
           ret_val = false;
@@ -70,7 +70,7 @@ class Command: public Connector
       argv.clear();
       return ret_val;
     }
-    virtual string get_input() //Not really doing much
+    virtual string get_input() //Returns input for read par
     {
       return input;
     }
