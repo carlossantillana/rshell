@@ -231,6 +231,12 @@ Execution::~Execution() {
       delete (*iter);
     }
     commandList.clear();
+
+    for (vector<RShell* >::iterator iter = tree.begin() ; iter != tree.end(); ++iter)
+    {
+      delete (*iter);
+    }
+    tree.clear();
 }
 
 bool Execution::execute(){
@@ -315,6 +321,7 @@ vector<RShell*>  Execution::prep_tree(){
     commandList.clear();//clear all vectors
     return tree;
 }
+
 void Execution::make_tree(){
     vector<RShell*>  tree = prep_tree();// prepares tree
     if (tree.size() > 0){//attaches right children to tree
@@ -324,4 +331,9 @@ void Execution::make_tree(){
         }
       }
   }
+}
+
+void Execution::clear(){
+  commandList.clear();
+  tree.clear();
 }
