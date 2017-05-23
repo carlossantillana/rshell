@@ -8,12 +8,12 @@
 #include "semicolon.h"
 #include "command.h"
 #include "test.h"
-
+#include "parentheses.h"
 using namespace boost;
 
-Read::Read(): foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false) {}
+Read::Read(): foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false), invalidParentheses(false) {}
 
-Read::Read(string i) : input(i), foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false){}
+Read::Read(string i) : input(i), foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false), invalidParentheses(false) {}
 
 Read::~Read(){
   for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -26,8 +26,9 @@ Read::~Read(){
 void Read::par(){
   string tmp;
   unsigned int count =0;
+  unsigned int leftParenthesesCounter = 0, rightParenthesesCounter = 0;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-    boost::char_separator<char> sep(" ","#;[]");//list of delimiters to check
+    boost::char_separator<char> sep(" ","#;[]()");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector
@@ -55,6 +56,16 @@ void Read::par(){
           Or* oring = new Or;
           commandList.push_back(oring);
         }
+        else if (tmp == "("){
+          leftParenthesesCounter++;
+          Parentheses* parentheses = new Parentheses("left");
+          commandList.push_back(parentheses);// pushes back a left parentheses
+        }
+        else if (tmp == ")"){
+          rightParenthesesCounter++;
+          Parentheses* parentheses = new Parentheses("right");
+          commandList.push_back(parentheses);// pushes back a right parentheses
+        }
         else {
           if (tmp == "exit"){
             if (count == 0){
@@ -68,7 +79,9 @@ void Read::par(){
         }
         count++;
   }
-
+  if (leftParenthesesCounter != rightParenthesesCounter){
+    invalidParentheses = true;// if invalid number of parentheses return strue
+  }
 }
 
 bool Read::get_foundExit(){
@@ -78,7 +91,9 @@ bool Read::get_foundExit(){
 bool Read::get_firstExit(){
   return this->firstExit;
 }
-
+bool Read::get_invalidParentheses(){
+  return this->invalidParentheses;
+}
 bool Read::get_foundTest(){
   return this->foundTest;
 }

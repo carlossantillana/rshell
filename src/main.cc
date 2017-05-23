@@ -16,6 +16,10 @@ int main()
 		if (!input.empty()){//checks for empty string case
 	    read->set_input(input);
 	    read->par();
+			if (read->get_invalidParentheses() == true){
+				cout << "Error invalid Parentheses\n";
+				break;
+			}
 			if (read->get_firstExit() == true){
 					break;
 			}
