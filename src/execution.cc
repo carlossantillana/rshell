@@ -286,8 +286,7 @@ void  Execution::prep_tree(){
     bool firstCommand = true;
 
     while (!commandList.empty()){
-
-        while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
+        while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
 
         {//fills left child
           children.push_back(commandList.at(i));
@@ -311,16 +310,10 @@ void  Execution::prep_tree(){
         }
         //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
-          leftParenthesesCounter++;
-          cout << "about to enter parentheses\n" << flush;
           Parentheses* parentheses = new Parentheses(commandList);
           parentheses->fill_parentheses();
           commandList = parentheses->get_commands();//updates command list
           tree.push_back(parentheses);
-          cout << "leaving Parentheses\n";
-        }
-        else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "right"){//probably not going to need this
-          rightParenthesesCounter++;
         }
         else if (children.front()->get_type() == "test")
         {
@@ -331,7 +324,7 @@ void  Execution::prep_tree(){
         else{
             //if only one input simply execute
             if (firstCommand == true){
-              child->execute();
+              tree.push_back(child);
             }
             else{
               //if there is a hanging command, set it the last connector's right child
@@ -339,8 +332,9 @@ void  Execution::prep_tree(){
             }
           }
         children.clear();
-        if (commandList.size() > 1 )//probably going to run into issue with parentheses here.
+        if (commandList.size() > 1 ){//probably going to run into issue with parentheses here.
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
+        }
         firstCommand = false;
     }
     commandList.clear();//clear all vectors
