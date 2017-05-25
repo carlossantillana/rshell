@@ -224,6 +224,7 @@
 #include "or.h"
 #include "semicolon.h"
 #include "parentheses.h"
+#include "test.h"
 
 
 Execution::~Execution() {
@@ -244,12 +245,17 @@ bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
+  //cout << "inside execute\n" << flush;
   if (tree.size() == 0)//allows for single command
+  {
     return false;
+  }
   bool ret_val = true;
 
   if (tree.at(0) != NULL)
+  {
     ret_val = tree.at(0)->execute();//executes tree
+  }
   return ret_val;
 }
 
@@ -275,18 +281,21 @@ vector<char *> Execution::str_to_char(vector<RShell*> vec){
 }
 void  Execution::prep_tree(){
     vector<RShell*> children;
-    // if leftParenthesesCounter.at (1) == 1 then left parenthese found; else not found or already closed.
+    RShell* child;
     unsigned int i=0;
     bool firstCommand = true;
+
     while (!commandList.empty()){
         while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
+
         {//fills left child
           children.push_back(commandList.at(i));
           i++;
         }
         commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to but not including connector
         i=0;
-        RShell* child = new Command(children);//makes Rshell command object to put into connector
+
+        child = new Command(children);//makes Rshell command object to put into connector
         if (commandList.front()->get_type() == "&&"){
           And* anding = new And(child);
           tree.push_back(anding);
@@ -305,6 +314,12 @@ void  Execution::prep_tree(){
           parentheses->fill_parentheses();
           commandList = parentheses->get_commands();//updates command list
           tree.push_back(parentheses);
+        }
+        else if (children.front()->get_type() == "test")
+        {
+          //cout << children.front()->get_input();
+          Test* testing = new Test(child, children.front()->get_input());
+          tree.push_back(testing);
         }
         else{
             //if only one input simply execute
@@ -330,6 +345,7 @@ void Execution::make_tree(){
     if (tree.size() > 0){//attaches right children to tree
       for (unsigned int i=0; i < tree.size()-1 ; i++){
         if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||" || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
+
           tree.at(i)->set_right_child(tree.at(i+1));
         }
       }
