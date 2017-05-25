@@ -22,7 +22,7 @@ public:
     bool execute(vector<RShell*> tree);
     void set_commands(vector<RShell*> commandList);
     vector<RShell*> get_commands();
-    vector<RShell*>  prep_tree();
+    void prep_tree();
     void make_tree();
     virtual string get_type();
     vector<char *> str_to_char(vector<RShell*> tree);

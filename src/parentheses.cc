@@ -42,19 +42,24 @@ bool Parentheses::execute() //Returns true if one argument is true
 }
 
 string Parentheses::get_type() {return type;}
+
 string Parentheses::get_input(){return input;}//tells if left or right parentheses
 
 void Parentheses::add_command(){}
 
 // note does not work yet!
-void Parentheses::fill_parentheses(){//fills up Parentheses with commands, figure out execute...
+void Parentheses::fill_parentheses(){//fills up Parentheses with commands
   vector<RShell*> children;
   unsigned int leftParenthesesCounter = 0;//probably auto initalize to zero
   unsigned int rightParenthesesCounter = 0;//used to check if parenthese is done
+  //unsigned int num_commands_used =0;probably use later if execute duplicates
   // if leftParenthesesCounter.at (1) == 1 then left parenthese found; else not found or already closed.
   unsigned int i=0;
   bool firstCommand = true;
-  while (commandList.front()->get_input() != ")"){
+  cout << "first element in fill parenthese " << commandList.front()->get_type()  << " erasing now"<< endl;
+  commandList.erase(commandList.begin(), commandList.begin() + 1);//removes first connector which is probably "("
+  cout << " new first element in fill parenthese " << commandList.front()->get_type() << endl;
+  while (commandList.front()->get_input() != "right"){
       while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";"  && commandList.at(i)->get_type() != "()")
       {//fills left child
         children.push_back(commandList.at(i));
@@ -76,13 +81,14 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands, figur
         tree.push_back(semying);
       }
       //we can safely assume all parentheses have matching pair by now.
-      else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "("){
+      else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
         leftParenthesesCounter++;
-        Parentheses* parentheses = new Parentheses();
+        Parentheses* parentheses = new Parentheses(commandList);
         parentheses->fill_parentheses();
+        commandList = parentheses->get_commands();//updates command list
         tree.push_back(parentheses);
       }
-      else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == ")"){//probably not going to need this
+      else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "right"){//probably not going to need this
         rightParenthesesCounter++;
       }
       else{
@@ -100,9 +106,31 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands, figur
         commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
       firstCommand = false;
   }
-  commandList.clear();//clear all vectors
+  make_tree();
+  execute(tree);
+}
+
+void Parentheses::make_tree(){
+  cout << "entering make tree\n";
+    if (tree.size() > 0){//attaches right children to tree
+      for (unsigned int i=0; i < tree.size()-1 ; i++){
+        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||" || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
+          tree.at(i)->set_right_child(tree.at(i+1));
+        }
+      }
+  }
 }
 
 void Parentheses::set_commands(vector<RShell*> commandList){this->commandList = commandList;}
 
 vector<RShell*> Parentheses::get_commands(){return this->commandList;}
+
+bool Parentheses::execute(vector<RShell*> tree)
+{
+  if (tree.size() == 0)//allows for single command
+    return executed = false;
+
+  if (tree.at(0) != NULL)
+    executed = tree.at(0)->execute();//executes tree
+  return executed;
+}
