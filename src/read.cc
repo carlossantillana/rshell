@@ -35,14 +35,11 @@ void Read::par(){
         if (tmp == "#"){//Breaks if #
           break;
         }
-        else if (tmp == "test" || tmp == "Test"){
-          Test* testing = new Test;
+        else if (tmp == "test" || tmp == "Test" || tmp == "["){
+          //cout << "\n\n THIS IS MY TMP: " << tmp << endl << endl;
+          Test* testing = new Test(tmp);
           commandList.push_back(testing);
         }
-        // else if (tmp == "["){
-        //   cout << "Create test\n";
-        //   break;
-        //}
         else if (tmp == "&&"){
           And* anding = new And;
           commandList.push_back(anding);

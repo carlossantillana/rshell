@@ -14,18 +14,22 @@ class Test: public RShell
 {
     private:
         vector<RShell*> commandList;
+        RShell* child;
         string type;// Test and arguement list
+        string input;
         bool e,f,d;
     public:
-        Test() : type("test"), e(false), f(false), d(false) {}
-        Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
+        Test(string in) : type("test"), input(in), e(false), f(false), d(false) {}
+        //Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
+        Test(RShell* i, string in) :child(i), type("test"), input(in), e(false), f(false), d(false) {} //Sets string variable to "test"
         ~Test(){}
-        void set_commands(vector<RShell*> commandList)
-        {
-          this->commandList = commandList; //Provides test object with RShell list
-        }
+        // void set_commands(vector<RShell*> commandList)
+        // {
+        //   this->commandList = commandList; //Provides test object with RShell list
+        // }
         bool execute() //Returns true if Test runs otherwise fails
         {
+          commandList = child->get_commandList();
           char* c;
           string test = "test";
           string bracket = "[";
@@ -34,13 +38,13 @@ class Test: public RShell
           string dflag = "-d";
           struct stat sb;
           vector<char *> argv = str_to_char(commandList);//converts vect of string to vect of char*
-          //Base case
-          // cout << "\n" << argv.size() << endl << endl;
+          // //Base case
+          // cout << "\n" << argv.size() << endl << endl << flush;
           // for (unsigned int i = 0; i < argv.size(); i++)
           // {
           //   cout << argv.at(i) << endl;
           // }
-          //cout << endl;
+          // cout << endl;
 	         if (argv.size() == 0)
 	         {
 		           cout << "(False)" << endl;
@@ -139,13 +143,13 @@ class Test: public RShell
           return type;
         }
         //Converts vect of string ot vect of char pointers
-        vector<char *> str_to_char(vector<RShell*> commandList){
+        vector<char *> str_to_char(vector<RShell*> vec){
             vector<char *> vectChar;
 
-            for(unsigned int  i = 0; i < commandList.size(); ++i){
+            for(unsigned int  i = 0; i < vec.size(); ++i){
                 char *tmp;
-                tmp = new char[commandList[i]->get_type().size() + 1];
-                memcpy(tmp, commandList[i]->get_type().c_str(), commandList[i]->get_type().size() + 1);
+                tmp = new char[vec[i]->get_input().size() + 1];
+                memcpy(tmp, vec[i]->get_input().c_str(), vec[i]->get_input().size() + 1);
 
                 vectChar.push_back(tmp);
             }
@@ -154,7 +158,7 @@ class Test: public RShell
         void set_right_child(RShell* r){r->get_type();}
         RShell* get_left(){return commandList.at(0);}
         RShell* get_right(){return commandList.at(0);}
-      	virtual string get_input(){return "";}//Prevents abstraction
+      	string get_input(){return input;}//Prevents abstraction
 };
 
 
