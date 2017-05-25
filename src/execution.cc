@@ -223,6 +223,7 @@
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
+#include "parentheses.h"
 
 
 Execution::~Execution() {
@@ -239,9 +240,7 @@ Execution::~Execution() {
     tree.clear();
 }
 
-bool Execution::execute(){
-  return execute(tree);
-}
+bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
@@ -255,15 +254,11 @@ bool Execution::execute(vector<RShell*> tree)
 }
 
 
-void Execution::set_commands(vector<RShell*> commandList)
-{
-  this->commandList = commandList;
-}
+void Execution::set_commands(vector<RShell*> commandList){this->commandList = commandList;}
 
-string Execution::get_type()
-{
-  return "Execution";
-}
+vector<RShell*> Execution::get_commands(){return this->commandList;}
+
+string Execution::get_type(){return "Execution";}
 
 //Converts vect of string ot vect of char pointers
 vector<char *> Execution::str_to_char(vector<RShell*> vec){
@@ -280,13 +275,13 @@ vector<char *> Execution::str_to_char(vector<RShell*> vec){
 }
 vector<RShell*>  Execution::prep_tree(){
     vector<RShell*> children;
-    vector<int> leftParenthesesCounter;//probably auto initalize to zero
-    vector<int> rightParenthesesCounter;//used to check if parenthese is done
+    unsigned int leftParenthesesCounter = 0;//probably auto initalize to zero
+    unsigned int rightParenthesesCounter = 0;//used to check if parenthese is done
     // if leftParenthesesCounter.at (1) == 1 then left parenthese found; else not found or already closed.
     unsigned int i=0;
     bool firstCommand = true;
     while (!commandList.empty()){
-        while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
+        while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
         {//fills left child
           children.push_back(commandList.at(i));
           i++;
@@ -306,14 +301,16 @@ vector<RShell*>  Execution::prep_tree(){
           Semicolon* semying = new Semicolon(child);
           tree.push_back(semying);
         }
-        //we can safely assume all parentheses have match now.
+        //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "("){
-          Parentheses* Parentheses = new Parentheses(child);
+          leftParenthesesCounter++;
+          Parentheses* parentheses = new Parentheses(commandList);
+          parentheses->fill_parentheses();
+          commandList = parentheses->get_commands();//updates command list
           tree.push_back(parentheses);
         }
-        else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == ")"){
-          Parentheses* Parentheses = new Parentheses(child);
-          tree.push_back(parentheses);
+        else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == ")"){//probably not going to need this
+          rightParenthesesCounter++;
         }
         else{
             //if only one input simply execute

@@ -4,7 +4,9 @@
 #ifndef __PARENTHESES_H__
 #define __PARENTHESES_H__
 
+#include "rshell.h"
 #include "connector.h"
+#include "command.h"
 
 class Parentheses : public Connector
 {
@@ -15,38 +17,24 @@ private:
   string input;
   bool executed;
   bool executeSuccessful;
+	vector<RShell*> tree;
+  vector<RShell*> commandList;
+	pid_t pid;
 public:
-	Parentheses()  //Default Constructor
-	: type("()"), input(""), executed(false), executeSuccessful(false)
-	{}
-
-  Parentheses(string i)  //Default Constructor
-  : type("()"), input(i), executed(false), executeSuccessful(false)
-  {}
-
-	Parentheses(RShell* l) //Constructor
-	: left(l), type("()"), input(""), executed(false), executeSuccessful(false)
-	{}
-	~Parentheses(){
-		delete left;
-		delete right;
-	}
-	bool execute() //Returns true if one argument is true
-	{
-		if (executed == false){// actually execute, change executeSuccessful depending on if it was or not
-      executed = true;
-	    return executeSuccessful;
-  }
-  else{// if already executed simply return if it was sucessful or not
-    return executeSuccessful;
-  }
-	}
-
-	string get_type()
-	{
-		return type;
-	}
-	virtual string get_input(){return input;}//tells if left or right parentheses
+	Parentheses();
+  Parentheses(string i);
+	Parentheses(RShell* l);
+	Parentheses(vector<RShell*> c);
+	~Parentheses();
+	bool execute();
+	string get_type();
+	virtual string get_input();//tells if left or right parentheses
+	void add_command();
+	void fill_parentheses();
+	// bool execute(vector<RShell*> tree);
+	// void make_tree();
+	void set_commands(vector<RShell*> commandList);
+	vector<RShell*> get_commands();
 };
 
 #endif
