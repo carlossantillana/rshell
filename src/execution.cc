@@ -223,6 +223,7 @@
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
+#include "parentheses.h"
 #include "test.h"
 
 
@@ -240,9 +241,7 @@ Execution::~Execution() {
     tree.clear();
 }
 
-bool Execution::execute(){
-  return execute(tree);
-}
+bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
@@ -261,15 +260,11 @@ bool Execution::execute(vector<RShell*> tree)
 }
 
 
-void Execution::set_commands(vector<RShell*> commandList)
-{
-  this->commandList = commandList;
-}
+void Execution::set_commands(vector<RShell*> commandList){this->commandList = commandList;}
 
-string Execution::get_type()
-{
-  return "Execution";
-}
+vector<RShell*> Execution::get_commands(){return this->commandList;}
+
+string Execution::get_type(){return "Execution";}
 
 //Converts vect of string ot vect of char pointers
 vector<char *> Execution::str_to_char(vector<RShell*> vec){
@@ -284,20 +279,21 @@ vector<char *> Execution::str_to_char(vector<RShell*> vec){
     }
     return vectChar;
 }
-vector<RShell*>  Execution::prep_tree(){
+void  Execution::prep_tree(){
     vector<RShell*> children;
     RShell* child;
     unsigned int i=0;
     bool firstCommand = true;
 
     while (!commandList.empty()){
-        while(i < commandList.size() && commandList.at(i)->get_type() != "&&"
-        && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";")
+
+        while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
+
         {//fills left child
           children.push_back(commandList.at(i));
           i++;
         }
-        commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
+        commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to but not including connector
         i=0;
 
         child = new Command(children);//makes Rshell command object to put into connector
@@ -312,6 +308,19 @@ vector<RShell*>  Execution::prep_tree(){
         else if(commandList.front()->get_type() == ";"){
           Semicolon* semying = new Semicolon(child);
           tree.push_back(semying);
+        }
+        //we can safely assume all parentheses have matching pair by now.
+        else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
+          leftParenthesesCounter++;
+          cout << "about to enter parentheses\n" << flush;
+          Parentheses* parentheses = new Parentheses(commandList);
+          parentheses->fill_parentheses();
+          commandList = parentheses->get_commands();//updates command list
+          tree.push_back(parentheses);
+          cout << "leaving Parentheses\n";
+        }
+        else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "right"){//probably not going to need this
+          rightParenthesesCounter++;
         }
         else if (children.front()->get_type() == "test")
         {
@@ -330,22 +339,19 @@ vector<RShell*>  Execution::prep_tree(){
             }
           }
         children.clear();
-        if (commandList.size() > 1 )
-          commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
+        if (commandList.size() > 1 )//probably going to run into issue with parentheses here.
+          commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
         firstCommand = false;
     }
     commandList.clear();//clear all vectors
-    return tree;
 }
 
 void Execution::make_tree(){
-    vector<RShell*>  tree = prep_tree();// prepares tree
+    prep_tree();// prepares tree
     if (tree.size() > 0){//attaches right children to tree
-      for (unsigned int i=0; i < tree.size()-1; i++)
-      {
-        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||"
-        || tree.at(i)->get_type() == ";" )
-        {
+      for (unsigned int i=0; i < tree.size()-1 ; i++){
+        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||" || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
+
           tree.at(i)->set_right_child(tree.at(i+1));
         }
       }

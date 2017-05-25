@@ -15,6 +15,7 @@ private:
     bool firstExit;
     bool foundTest;
     bool foundParenthesis;
+    bool invalidParentheses;
     vector<RShell*> commandList;
 public:
     Read();
@@ -25,6 +26,7 @@ public:
     bool get_foundExit();
     bool get_firstExit();
     bool get_foundTest();
+    bool get_invalidParentheses();
     bool get_foundParenthesis();
     virtual bool execute();
     vector<RShell*> get_commands();
