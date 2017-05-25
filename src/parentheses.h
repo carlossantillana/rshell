@@ -32,7 +32,6 @@ public:
 	virtual string get_input();//tells if left or right parentheses
 	void add_command();
 	void fill_parentheses();
-	// bool execute(vector<RShell*> tree);
 	void make_tree();
 	void set_commands(vector<RShell*> commandList);
 	vector<RShell*> get_commands();
