@@ -42,6 +42,7 @@ public:
 		return type;
 	}
 	virtual string get_input(){return "";}//Prevents abstraction
+	void set_right_child(RShell* r){this->right = r;}
 };
 
 #endif

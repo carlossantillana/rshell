@@ -33,23 +33,23 @@ public:
 	}
 	bool execute() //Returns true if both sides are true
 	{
-		bool exec = false;
+		//bool exec = false;
 		if(left->execute() && right->execute())
 		{
-			exec = true;
+			return true;
 		}
 		else
 		{
-			exec = false;
+			return false;
 		}
-		return exec;
+		//return exec;
 	}
 
 	string get_type()
 	{
 		return type;
 	}
-  virtual void set_right_child(RShell* r){this->right = r;}
+  void set_right_child(RShell* r){this->right = r;}
 	RShell* get_left(){return left;}
 	RShell* get_right(){return right;}
 	virtual string get_input(){return "";}//Prevents abstraction

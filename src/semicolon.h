@@ -43,6 +43,7 @@ public:
 	{
 		return type;
 	}
+	void set_right_child(RShell* r){this->right = r;}
 };
 
 #endif
