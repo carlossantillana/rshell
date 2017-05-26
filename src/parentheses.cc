@@ -9,6 +9,7 @@
 #include "and.h"
 #include "or.h"
 #include "semicolon.h"
+#include "test.h"
 
 Parentheses::Parentheses()  //Default Constructor
 : type("()"), input(""), executed(false), executeSuccessful(false)
@@ -58,18 +59,45 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
       commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
       i=0;
       RShell* child = new Command(children);//makes Rshell command object to put into connector
-      if (commandList.front()->get_type() == "&&"){
-        And* anding = new And(child);
-        tree.push_back(anding);
-      }
-      else if(commandList.front()->get_type() == "||"){
-        Or* oring = new Or(child);
-        tree.push_back(oring);
-      }
-      else if(commandList.front()->get_type() == ";"){
-        Semicolon* semying = new Semicolon(child);
-        tree.push_back(semying);
-      }
+			if (commandList.front()->get_type() == "&&"){
+				if (children.front()->get_type() == "test")
+				{
+					Test* testing = new Test(child, children.front()->get_input());
+					And* anding = new And(testing);
+					tree.push_back(anding);
+				}
+				else
+				{
+					And* anding = new And(child);
+					tree.push_back(anding);
+				}
+			}
+			else if(commandList.front()->get_type() == "||"){
+				if (children.front()->get_type() == "test")
+				{
+					Test* testing = new Test(child, children.front()->get_input());
+					Or* oring = new Or(testing);
+					tree.push_back(oring);
+				}
+				else
+				{
+					Or* oring = new Or(child);
+					tree.push_back(oring);
+				}
+			}
+			else if(commandList.front()->get_type() == ";"){
+				if (children.front()->get_type() == "test")
+				{
+					Test* testing = new Test(child, children.front()->get_input());
+					Semicolon* semying = new Semicolon(testing);
+					tree.push_back(semying);
+				}
+				else
+				{
+					Semicolon* semying = new Semicolon(child);
+					tree.push_back(semying);
+				}
+			}
       //we can safely assume all parentheses have matching pair by now.
       else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
         Parentheses* parentheses = new Parentheses(commandList);

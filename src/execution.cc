@@ -1,4 +1,4 @@
-//Copyright 2016 Jonathan Woolf and Carlos Santillana
+//Copyright 2017 Jonathan Woolf and Carlos Santillana
 //This program is distributed under the terms of the GNU General Public License
 
 // #include "execution.h"
@@ -297,16 +297,43 @@ void  Execution::prep_tree(){
 
         child = new Command(children);//makes Rshell command object to put into connector
         if (commandList.front()->get_type() == "&&"){
-          And* anding = new And(child);
-          tree.push_back(anding);
+          if (children.front()->get_type() == "test")
+          {
+            Test* testing = new Test(child, children.front()->get_input());
+            And* anding = new And(testing);
+            tree.push_back(anding);
+          }
+          else
+          {
+            And* anding = new And(child);
+            tree.push_back(anding);
+          }
         }
         else if(commandList.front()->get_type() == "||"){
-          Or* oring = new Or(child);
-          tree.push_back(oring);
+          if (children.front()->get_type() == "test")
+          {
+            Test* testing = new Test(child, children.front()->get_input());
+            Or* oring = new Or(testing);
+            tree.push_back(oring);
+          }
+          else
+          {
+            Or* oring = new Or(child);
+            tree.push_back(oring);
+          }
         }
         else if(commandList.front()->get_type() == ";"){
-          Semicolon* semying = new Semicolon(child);
-          tree.push_back(semying);
+          if (children.front()->get_type() == "test")
+          {
+            Test* testing = new Test(child, children.front()->get_input());
+            Semicolon* semying = new Semicolon(testing);
+            tree.push_back(semying);
+          }
+          else
+          {
+            Semicolon* semying = new Semicolon(child);
+            tree.push_back(semying);
+          }
         }
         //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
@@ -344,8 +371,8 @@ void Execution::make_tree(){
     prep_tree();// prepares tree
     if (tree.size() > 0){//attaches right children to tree
       for (unsigned int i=0; i < tree.size()-1 ; i++){
-        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||" || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
-
+        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||"
+        || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
           tree.at(i)->set_right_child(tree.at(i+1));
         }
       }

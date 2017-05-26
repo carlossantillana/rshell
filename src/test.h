@@ -1,4 +1,4 @@
-//Copyright 2016 Jonathan Woolf and Carlos Santillana
+//Copyright 2017 Jonathan Woolf and Carlos Santillana
 //This program is distributed under the terms of the GNU General Public License
 
 #ifndef __TEST_H__
@@ -22,13 +22,21 @@ class Test: public RShell
         Test(string in) : type("test"), input(in), e(false), f(false), d(false) {}
         //Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
         Test(RShell* i, string in) :child(i), type("test"), input(in), e(false), f(false), d(false) {} //Sets string variable to "test"
-        ~Test(){}
+        ~Test()
+        {
+          for (vector<RShell* >::iterator iter = commandList.begin(); iter != commandList.end(); ++iter)
+          {
+            delete (*iter);
+          }
+          commandList.clear();
+        }
         // void set_commands(vector<RShell*> commandList)
         // {
         //   this->commandList = commandList; //Provides test object with RShell list
         // }
         bool execute() //Returns true if Test runs otherwise fails
         {
+          //cout << "HELP\n" << flush;
           commandList = child->get_commandList();
           char* c;
           string test = "test";
@@ -158,7 +166,7 @@ class Test: public RShell
         void set_right_child(RShell* r){r->get_type();}
         RShell* get_left(){return commandList.at(0);}
         RShell* get_right(){return commandList.at(0);}
-      	string get_input(){return input;}//Prevents abstraction
+      	string get_input(){return input;}
 };
 
 

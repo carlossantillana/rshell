@@ -33,13 +33,14 @@ class Command: public Connector
       : type("command"), command(c)
       {}
 
-      ~Command(){
-      for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
+      ~Command()
       {
-        delete (*iter);
+        for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
+        {
+          delete (*iter);
+        }
+        command.clear();
       }
-      command.clear();
-    }
     virtual bool execute() //Returns true if command exists
     {
       bool ret_val= true;
