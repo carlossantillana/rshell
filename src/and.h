@@ -16,15 +16,15 @@ private:
 	bool exec;// determines whether or not to execute
 public:
 	And() //Default Constructor
-	: type("&&")
+	: type("&&"), executed(false), exec(true)
 	{}
 
 	And(RShell* l) //RShell Constructor
-	: left(l), type("&&")
+	: left(l), type("&&"), executed(false), exec(true)
 	{}
 
 	And(RShell* l, RShell* r) //RShell Constructor
-	: left(l), right(r), type("&&")
+	: left(l), right(r), type("&&"), executed(false), exec(true)
 
 	{}
 

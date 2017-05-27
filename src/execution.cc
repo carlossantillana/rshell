@@ -245,16 +245,14 @@ bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
-  //cout << "inside execute\n" << flush;
   if (tree.size() == 0)//allows for single command
   {
     return false;
   }
   bool ret_val = true;
 
-  if (tree.at(0) != NULL)
-  {
-    ret_val = tree.at(0)->execute();//executes tree
+  for (unsigned int i =0; i < tree.size(); i++){
+    ret_val = tree.at(i)->execute();//executes tree
   }
   return ret_val;
 }
@@ -294,13 +292,14 @@ void  Execution::prep_tree(){
         }
         commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to but not including connector
         i=0;
+        if (!children.empty()){
+          if (firstCommand)
+            child = new Command(children);
+          else
+            child = new Command(children, tree.back());//makes Rshell command object to put into connector
 
-
-        if (firstCommand)
-          child = new Command(children);
-        else
-          child = new Command(children, tree.back());//makes Rshell command object to put into connector
-        tree.push_back(child);
+          tree.push_back(child);
+      }
         if (commandList.front()->get_type() == "&&"){
           if (children.front()->get_type() == "test")
           {
@@ -353,16 +352,6 @@ void  Execution::prep_tree(){
           Test* testing = new Test(child, children.front()->get_input());
           tree.push_back(testing);
         }
-        // else{
-        //     //if only one input simply execute
-        //     // if (firstCommand == true){
-        //     //   tree.push_back(child);
-        //     // }
-        //     // else{
-        //       //if there is a hanging command, set it the last connector's right child
-        //     //  tree.at(tree.size()-1)->set_right_child(child);
-        //     // }
-        //   }
         children.clear();
         if (commandList.size() > 1 ){//probably going to run into issue with parentheses here.
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
@@ -378,7 +367,7 @@ void Execution::make_tree(){
       for (unsigned int i=0; i < tree.size()-1 ; i++){
           tree.at(i)->set_right_child(tree.at(i+1));
       }
-  }
+    }
 }
 
 void Execution::clear(){

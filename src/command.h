@@ -48,7 +48,7 @@ class Command: public Connector
       }
     virtual bool execute() //Returns true if command exists
     {
-      executed= true;
+      this->executed = true;
       if (command.at(0)->get_input() == "exit"){
         return false;
       }
@@ -59,13 +59,13 @@ class Command: public Connector
         if (pid == 0){
           if (execvp(argv[0], argv.data()) == -1){// runs command
             perror("execvp");
-            executed = false;
+            this->executed = false;
           }
         }
         if (pid > 0){//parent
           if (wait(0) == -1){
             perror("wait");
-            executed = false;
+            this->executed = false;
           }
         }
         //memory management
@@ -105,7 +105,8 @@ class Command: public Connector
     }
     RShell* get_left(){return left;}
     RShell* get_right(){return right;}
-
+    bool get_executed() {return this->executed;}
+    void set_exec(bool e){this->exec = e;}
 };
 
 #endif

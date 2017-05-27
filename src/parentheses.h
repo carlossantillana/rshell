@@ -15,11 +15,11 @@ private:
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
   string input;
-  bool executed;
-  bool exec;
 	vector<RShell*> tree;
   vector<RShell*> commandList;
 	pid_t pid;
+	bool executed;//determines if was already executed
+	bool exec;// determines whether or not to execute
 public:
 	Parentheses();
   Parentheses(string i);
@@ -34,6 +34,8 @@ public:
 	void make_tree();
 	void set_commands(vector<RShell*> commandList);
 	vector<RShell*> get_commands();
+	bool get_executed();
+	void set_exec(bool e);
 };
 
 #endif
