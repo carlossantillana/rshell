@@ -27,15 +27,7 @@ public:
 		}
 	bool execute() //Returns true if one argument is true
 	{
-		bool exec = false;
-		if(left->execute() || right->execute())
-		{
-			exec = true;
-		}
-		else
-		{
-			exec = false;
-		}
+		executed = true;
 		return exec;
 	}
 

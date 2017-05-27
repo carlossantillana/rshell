@@ -16,7 +16,7 @@ private:
 	string type; //Sets type of child
   string input;
   bool executed;
-  bool executeSuccessful;
+  bool exec;
 	vector<RShell*> tree;
   vector<RShell*> commandList;
 	pid_t pid;
@@ -27,7 +27,6 @@ public:
 	Parentheses(vector<RShell*> c);
 	~Parentheses();
 	bool execute();
-	bool execute(vector<RShell*> tree);
 	string get_type();
 	virtual string get_input();//tells if left or right parentheses
 	void add_command();

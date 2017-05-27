@@ -12,19 +12,19 @@
 #include "test.h"
 
 Parentheses::Parentheses()  //Default Constructor
-: type("()"), input(""), executed(false), executeSuccessful(false)
+: type("()"), input(""), executed(false), exec(true)
 {}
 
 Parentheses::Parentheses(string i)  //Default Constructor
-: type("()"), input(i), executed(false), executeSuccessful(false)
+: type("()"), input(i), executed(false), exec(true)
 {}
 
 Parentheses::Parentheses(RShell* l) //Constructor
-: left(l), type("()"), input(""), executed(false), executeSuccessful(false)
+: left(l), type("()"), input(""), executed(false), exec(true)
 {}
 
 Parentheses::Parentheses(vector<RShell*> c) //Constructor
-:type("()"), input(""), executed(false), executeSuccessful(false), commandList(c)
+:type("()"), input(""), executed(false), exec(true), commandList(c)
 {}
 
 Parentheses::~Parentheses(){
@@ -33,7 +33,12 @@ Parentheses::~Parentheses(){
 }
 bool Parentheses::execute() //Returns true if one argument is true
 {
-	return executeSuccessful;
+	if (tree.size() == 0)//allows for single command
+		return executed = false;
+
+	if (tree.at(0) != NULL)
+		executed = tree.at(0)->execute();//executes tree add statement so that if false once it stays false
+	return executed;
 }
 
 string Parentheses::get_type() {return type;}
@@ -121,7 +126,6 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
       firstCommand = false;
   }
   make_tree();
-  execute(tree);
 }
 
 void Parentheses::make_tree(){
@@ -137,13 +141,3 @@ void Parentheses::make_tree(){
 void Parentheses::set_commands(vector<RShell*> commandList){this->commandList = commandList;}
 
 vector<RShell*> Parentheses::get_commands(){return this->commandList;}
-
-bool Parentheses::execute(vector<RShell*> tree)
-{
-  if (tree.size() == 0)//allows for single command
-    return executed = false;
-
-  if (tree.at(0) != NULL)
-    executed = tree.at(0)->execute();//executes tree
-  return executed;
-}

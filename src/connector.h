@@ -12,6 +12,8 @@ private:
     RShell* left; //Operation left of connector
     RShell* right; //Operation right of connector
     string type; //Sets type of child
+    bool executed;//determines if was already executed
+    bool exec;// determines whether or not to execute
 public:
   Connector(){}
   ~Connector(){
@@ -27,6 +29,8 @@ public:
     virtual void set_right_child(RShell* r){ right = r;}
     virtual RShell* get_left(){return left;}
     virtual RShell* get_right(){return right;}
+    virtual bool get_executed(){return executed;}
+    virtual void set_exec(bool e){exec = e;}
 };
 
 #endif

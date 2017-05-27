@@ -33,16 +33,12 @@ public:
 	}
 	bool execute() //Returns true if both sides are true
 	{
-		//bool exec = false;
-		if(left->execute() && right->execute())
+		executed = true;
+		if(!left->executed())
 		{
-			return true;
+			right->set_exec(false);
 		}
-		else
-		{
-			return false;
-		}
-		//return exec;
+		return executed;
 	}
 
 	string get_type()
