@@ -29,8 +29,6 @@ public:
     virtual void set_right_child(RShell* r){ right = r;}
     virtual RShell* get_left(){return left;}
     virtual RShell* get_right(){return right;}
-    virtual bool get_executed(){return executed;}
-    virtual void set_exec(bool e){exec = e;}
 };
 
 #endif

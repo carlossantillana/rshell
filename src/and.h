@@ -12,7 +12,8 @@ private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
-
+	bool executed;//determines if was already executed
+	bool exec;// determines whether or not to execute
 public:
 	And() //Default Constructor
 	: type("&&")
@@ -34,7 +35,7 @@ public:
 	bool execute() //Returns true if both sides are true
 	{
 		executed = true;
-		if(!left->executed())
+		if(!left->get_executed())
 		{
 			right->set_exec(false);
 		}

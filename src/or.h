@@ -28,7 +28,7 @@ public:
 	bool execute() //Returns true if one argument is true
 	{
 		bool executed = true;
-		if(!left->executed())
+		if(!left->get_executed())
 		{
 			right->set_exec(true);
 		}
