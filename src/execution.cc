@@ -245,16 +245,14 @@ bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
-  //cout << "inside execute\n" << flush;
   if (tree.size() == 0)//allows for single command
   {
     return false;
   }
   bool ret_val = true;
 
-  if (tree.at(0) != NULL)
-  {
-    ret_val = tree.at(0)->execute();//executes tree
+  for (unsigned int i =0; i < tree.size(); i++){
+    ret_val = tree.at(i)->execute();//executes tree
   }
   return ret_val;
 }
@@ -294,44 +292,50 @@ void  Execution::prep_tree(){
         }
         commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to but not including connector
         i=0;
+        if (!children.empty()){
+          if (firstCommand)
+            child = new Command(children);
+          else
+            child = new Command(children, tree.back());//makes Rshell command object to put into connector
 
-        child = new Command(children);//makes Rshell command object to put into connector
+          tree.push_back(child);
+      }
         if (commandList.front()->get_type() == "&&"){
-          if (children.front()->get_type() == "test")
+          if (!children.empty() && children.front()->get_type() == "test")
           {
-            Test* testing = new Test(child, children.front()->get_input());
+            Test* testing = new Test(tree.back(), children.front()->get_input());
             And* anding = new And(testing);
             tree.push_back(anding);
           }
           else
           {
-            And* anding = new And(child);
+            And* anding = new And(tree.back());
             tree.push_back(anding);
           }
         }
         else if(commandList.front()->get_type() == "||"){
-          if (children.front()->get_type() == "test")
+          if (!children.empty() && children.front()->get_type() == "test")
           {
-            Test* testing = new Test(child, children.front()->get_input());
+            Test* testing = new Test(tree.back(), children.front()->get_input());
             Or* oring = new Or(testing);
             tree.push_back(oring);
           }
           else
           {
-            Or* oring = new Or(child);
-            tree.push_back(oring);
+              Or* oring = new Or(tree.back());
+              tree.push_back(oring);
           }
         }
         else if(commandList.front()->get_type() == ";"){
-          if (children.front()->get_type() == "test")
+          if (!children.empty() && children.front()->get_type() == "test")
           {
-            Test* testing = new Test(child, children.front()->get_input());
+            Test* testing = new Test(tree.back(), children.front()->get_input());
             Semicolon* semying = new Semicolon(testing);
             tree.push_back(semying);
           }
           else
           {
-            Semicolon* semying = new Semicolon(child);
+            Semicolon* semying = new Semicolon(tree.back());
             tree.push_back(semying);
           }
         }
@@ -342,24 +346,14 @@ void  Execution::prep_tree(){
           commandList = parentheses->get_commands();//updates command list
           tree.push_back(parentheses);
         }
-        else if (children.front()->get_type() == "test")
+        else if (!children.empty() && children.front()->get_type() == "test")
         {
           //cout << children.front()->get_input();
-          Test* testing = new Test(child, children.front()->get_input());
+          Test* testing = new Test(tree.back(), children.front()->get_input());
           tree.push_back(testing);
         }
-        else{
-            //if only one input simply execute
-            if (firstCommand == true){
-              tree.push_back(child);
-            }
-            else{
-              //if there is a hanging command, set it the last connector's right child
-              tree.at(tree.size()-1)->set_right_child(child);
-            }
-          }
         children.clear();
-        if (commandList.size() > 1 ){//probably going to run into issue with parentheses here.
+        if (commandList.size() >= 1 ){//probably going to run into issue with parentheses here.
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
         }
         firstCommand = false;
@@ -371,12 +365,9 @@ void Execution::make_tree(){
     prep_tree();// prepares tree
     if (tree.size() > 0){//attaches right children to tree
       for (unsigned int i=0; i < tree.size()-1 ; i++){
-        if (tree.at(i)->get_type() == "&&" || tree.at(i)->get_type() == "||"
-        || tree.at(i)->get_type() == ";" || tree.at(i)->get_type() == "()" ){
           tree.at(i)->set_right_child(tree.at(i+1));
-        }
       }
-  }
+    }
 }
 
 void Execution::clear(){

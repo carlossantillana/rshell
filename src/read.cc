@@ -37,7 +37,6 @@ void Read::par(){
           break;
         }
         else if (tmp == "test" || tmp == "Test" || tmp == "["){
-          //cout << "\n\n THIS IS MY TMP: " << tmp << endl << endl;
           Test* testing = new Test(tmp);
           commandList.push_back(testing);
         }

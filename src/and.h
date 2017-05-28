@@ -12,18 +12,19 @@ private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
-
+	bool executed;//determines if was already executed
+	bool exec;// determines whether or not to execute
 public:
 	And() //Default Constructor
-	: type("&&")
+	: type("&&"), executed(false), exec(true)
 	{}
 
 	And(RShell* l) //RShell Constructor
-	: left(l), type("&&")
+	: left(l), type("&&"), executed(false), exec(true)
 	{}
 
 	And(RShell* l, RShell* r) //RShell Constructor
-	: left(l), right(r), type("&&")
+	: left(l), right(r), type("&&"), executed(false), exec(true)
 
 	{}
 
@@ -33,16 +34,12 @@ public:
 	}
 	bool execute() //Returns true if both sides are true
 	{
-		//bool exec = false;
-		if(left->execute() && right->execute())
+		executed = true;
+		if(!left->get_executed())
 		{
-			return true;
+			right->set_exec(false);
 		}
-		else
-		{
-			return false;
-		}
-		//return exec;
+		return executed;
 	}
 
 	string get_type()

@@ -20,19 +20,24 @@ class Command: public Connector
         string type;// command and arguement list
         string input;// type of command for parsing
         vector<RShell*> command;
-            pid_t pid;
+        pid_t pid;
+        bool executed;//determines if was already executed
+        bool exec;// determines whether or not to execute
     public:
       Command() //Constructor reads in command type
-      : type("command")
+      : type("command"), executed(false), exec(true)
       {}
       Command(string i) //Constructor reads in string type
-      : type("command"), input(i)
+      : type("command"), input(i), executed(false), exec(true)
       {}
 
       Command(vector<RShell*> c) //Constructor reads in command type
-      : type("command"), command(c)
+      : type("command"), command(c), executed(false), exec(true)
       {}
 
+        Command(vector<RShell*> c, RShell* parent) //Constructor reads in command type
+        : left(parent), type("command"), command(c), executed(false), exec(true)
+        {}
       ~Command()
       {
         for (vector<RShell* >::iterator iter = command.begin() ; iter != command.end(); ++iter)
@@ -43,33 +48,34 @@ class Command: public Connector
       }
     virtual bool execute() //Returns true if command exists
     {
-      bool ret_val= true;
+      this->executed = true;
       if (command.at(0)->get_input() == "exit"){
-        return false;
+        return executed = false;
       }
-      vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
-      argv.push_back(NULL);
-      pid = fork();
-      if (pid == 0){
-        if (execvp(argv[0], argv.data()) == -1){// runs command
-          perror("execvp");
-          ret_val = false;
+      if (exec == true){
+        vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
+        argv.push_back(NULL);
+        pid = fork();
+        if (pid == 0){
+          if (execvp(argv[0], argv.data()) == -1){// runs command
+            perror("execvp");
+            this->executed = false;
+          }
         }
-      }
-      if (pid > 0){//parent
-        if (wait(0) == -1){
-          perror("wait");
-          ret_val = false;
+        if (pid > 0){//parent
+          if (wait(0) == -1){
+            perror("wait");
+            this->executed = false;
+          }
         }
-
+        //memory management
+        for (vector<char* >::iterator iter = argv.begin() ; iter != argv.end(); ++iter)
+        {
+          delete (*iter);
+        }
+        argv.clear();
       }
-      //memory management
-      for (vector<char* >::iterator iter = argv.begin() ; iter != argv.end(); ++iter)
-      {
-        delete (*iter);
-      }
-      argv.clear();
-      return ret_val;
+      return executed;
     }
     virtual string get_input() //Returns input for read par
     {
@@ -99,7 +105,8 @@ class Command: public Connector
     }
     RShell* get_left(){return left;}
     RShell* get_right(){return right;}
-
+    bool get_executed() {return this->executed;}
+    void set_exec(bool e){this->exec = e;}
 };
 
 #endif

@@ -12,12 +12,14 @@ private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
+	bool executed;//determines if was already executed
+	bool exec;// determines whether or not to execute
 public:
 	Or()  //Default Constructor
-	: type("||")
+	: type("||"), executed(false), exec(true)
 	{}
 	Or(RShell* l) //Constructor
-	: left(l), type("||")
+	: left(l), type("||"), executed(false), exec(true)
 	{}
 	~Or(){
 		delete left;
@@ -25,16 +27,14 @@ public:
 	}
 	bool execute() //Returns true if one argument is true
 	{
-		bool exec = false;
-		if(left->execute() || right->execute())
+		bool executed = true;
+		if(!left->get_executed())
 		{
-			exec = true;
+			right->set_exec(true);
 		}
 		else
-		{
-			exec = false;
-		}
-		return exec;
+			right->set_exec(false);
+		return executed;
 	}
 
 	string get_type()

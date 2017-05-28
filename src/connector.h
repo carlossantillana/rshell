@@ -12,6 +12,8 @@ private:
     RShell* left; //Operation left of connector
     RShell* right; //Operation right of connector
     string type; //Sets type of child
+    bool executed;//determines if was already executed
+    bool exec;// determines whether or not to execute
 public:
   Connector(){}
   ~Connector(){

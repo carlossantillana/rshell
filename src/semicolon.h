@@ -12,6 +12,8 @@ private:
 	RShell* left; //Operation left of connector
 	RShell* right; //Operation right of connector
 	string type; //Sets type of child
+	bool executed;//determines if was already executed
+	bool exec;// determines whether or not to execute
 public:
 	Semicolon() //Defalut Constructor
 	: type(";")
@@ -27,15 +29,7 @@ public:
 		}
 	bool execute() //Returns true if one argument is true
 	{
-		bool exec = false;
-		if(left->execute() || right->execute())
-		{
-			exec = true;
-		}
-		else
-		{
-			exec = false;
-		}
+		executed = true;
 		return exec;
 	}
 

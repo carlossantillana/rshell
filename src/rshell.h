@@ -14,6 +14,8 @@ class RShell //Base class
 {
 private:
     string type; //Visible representation of children
+    bool executed;//determines if was already executed
+    bool exec;// determines whether or not to execute
 public:
     RShell() {} //Default Constructor
     virtual ~RShell() {}// for memory management
@@ -28,6 +30,9 @@ public:
       command.push_back(this);
       return command;
     }
+    virtual bool get_executed(){return executed;}
+    virtual void set_exec(bool e){exec = e;}
   };
+
 
 #endif
