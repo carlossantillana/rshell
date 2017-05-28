@@ -28,7 +28,6 @@ public:
 	bool execute() //Returns true if one argument is true
 	{
 		bool executed = true;
-		cout << "left executed = " << left->get_executed() << endl;
 		if(!left->get_executed())
 		{
 			right->set_exec(true);
