@@ -252,6 +252,7 @@ bool Execution::execute(vector<RShell*> tree)
   bool ret_val = true;
 
   for (unsigned int i =0; i < tree.size(); i++){
+    cout << "tree at i type, i : " << i << " type " << tree.at(i)->get_type() << endl;
     ret_val = tree.at(i)->execute();//executes tree
   }
   return ret_val;
@@ -363,11 +364,13 @@ void  Execution::prep_tree(){
 
 void Execution::make_tree(){
     prep_tree();// prepares tree
+    cout << "tree size " << tree.size() << endl;
     if (tree.size() > 0){//attaches right children to tree
       for (unsigned int i=0; i < tree.size()-1 ; i++){
           tree.at(i)->set_right_child(tree.at(i+1));
       }
     }
+      cout << "leaving make tree\n";
 }
 
 void Execution::clear(){

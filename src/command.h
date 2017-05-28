@@ -50,7 +50,7 @@ class Command: public Connector
     {
       this->executed = true;
       if (command.at(0)->get_input() == "exit"){
-        return false;
+        return executed = false;
       }
       if (exec == true){
         vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp

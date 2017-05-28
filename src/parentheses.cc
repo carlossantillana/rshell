@@ -33,6 +33,7 @@ Parentheses::~Parentheses(){
 }
 bool Parentheses::execute() //Returns true if one argument is true
 {
+	cout << "begining of execute: parentheses executed " << executed << endl;
 	executed = true;
   if (tree.size() == 0)//allows for single command
   {
@@ -45,8 +46,8 @@ bool Parentheses::execute() //Returns true if one argument is true
 			executed = false;
 		}
   }
-
-  return ret_val;
+	cout << "ending of execute: parentheses executed " << executed << endl;
+  return executed;
 }
 
 string Parentheses::get_type() {return type;}
@@ -59,24 +60,25 @@ void Parentheses::add_command(){}
 void Parentheses::fill_parentheses(){//fills up Parentheses with commands
   vector<RShell*> children;
   RShell* child;
-  unsigned int i=0;
+  unsigned int j = 0;
   bool firstCommand = true;
-  commandList.erase(commandList.begin(), commandList.begin() + 1);//removes first connector which is probably "("
-  while (commandList.front()->get_input() != "right"){
-      while(i < commandList.size() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";"  && commandList.at(i)->get_type() != "()")
+  this->commandList.erase(commandList.begin(), commandList.begin() + 1);//removes first connector which is probably "("
+  while (commandList.front()->get_input() != "right" && !commandList.empty()){
+      while(j < commandList.size() && commandList.at(j)->get_type() != "&&" && commandList.at(j)->get_type() != "||" && commandList.at(j)->get_type() != ";"  && commandList.at(j)->get_type() != "()")
       {//fills left child
-        children.push_back(commandList.at(i));
-        i++;
+        children.push_back(commandList.at(j));
+        j++;
       }
-      commandList.erase(commandList.begin(), commandList.begin()+ i);//erases up to connector
-      i=0;
+      this->commandList.erase(commandList.begin(), commandList.begin()+ j);//erases up to connector
+      j=0;
+			if (!children.empty()){
+				if (firstCommand)
+					child = new Command(children);
+				else
+					child = new Command(children, tree.back());//makes Rshell command object to put into connector
 
-			if (firstCommand)
-				child = new Command(children);
-			else
-				child = new Command(children, tree.back());//makes Rshell command object to put into connector
-
-			tree.push_back(child);
+				tree.push_back(child);
+		}
 			if (commandList.front()->get_type() == "&&"){
 				if (children.front()->get_type() == "test")
 				{
@@ -124,10 +126,12 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
         tree.push_back(parentheses);
       }
       children.clear();
-      if (commandList.size() >= 1 )
+      if (commandList.size() >= 1 && commandList.front()->get_input() != "right")
         commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
       firstCommand = false;
   }
+	if (!commandList.empty())
+		  this->commandList.erase(commandList.begin(), commandList.begin() + 1);//removes first connector which is probably ")"
   make_tree();
 }
 
