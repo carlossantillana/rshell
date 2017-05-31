@@ -32,14 +32,10 @@ class Test: public RShell
           }
           commandList.clear();
         }
-        // void set_commands(vector<RShell*> commandList)
-        // {
-        //   this->commandList = commandList; //Provides test object with RShell list
-        // }
+
         bool execute() //Returns true if Test runs otherwise fails
         {
           this->executed = true;
-          //cout << "HELP\n" << flush;
           commandList = child->get_commandList();
           char* c;
           string test = "test";
@@ -49,22 +45,15 @@ class Test: public RShell
           string dflag = "-d";
           struct stat sb;
           vector<char *> argv = str_to_char(commandList);//converts vect of string to vect of char*
-          // //Base case
-          // cout << "\n" << argv.size() << endl << endl << flush;
-          // for (unsigned int i = 0; i < argv.size(); i++)
-          // {
-          //   cout << argv.at(i) << endl;
-          // }
-          // cout << endl;
-	         if (argv.size() == 0)
-	         {
-		           cout << "(False)" << endl;
-		           return executed = false;
-	         }
-           else if (argv.at(0) == test)
-	         {
-		           if (argv.size() == 3)
-		           {
+	        if (argv.size() == 0)
+	        {
+		          cout << "(False)" << endl;
+		          return executed = false;
+	        }
+          else if (argv.at(0) == test)
+	        {
+		          if (argv.size() == 3)
+		          {
 			              c = argv.at(2);
 			              if (argv.at(1) == eflag)
 			              {
@@ -78,28 +67,28 @@ class Test: public RShell
 			              {
 				                  d = true;
 			              }
-		           }
-		           else if (argv.size() == 2)
-		           {
+		          }
+		          else if (argv.size() == 2)
+		          {
 			              c = argv.at(1);
 			              e = true;
-		           }
-		           else
-		           {
+		          }
+		          else
+		          {
 			              cout << "(False)" << endl;
 			              return executed = false;
-		           }
-	         }
-           else if(argv.at(0) == bracket)
-           {
-             if (argv.size() == 4)
-             {
-                  c = argv.at(2);
-                  if (argv.at(1) == eflag)
-                  {
-                        e = true;
-                  }
-                  else if (argv.at(1) == fflag)
+		          }
+	        }
+          else if(argv.at(0) == bracket)
+          {
+            if (argv.size() == 4)
+            {
+              c = argv.at(2);
+              if (argv.at(1) == eflag)
+              {
+                e = true;
+              }
+              else if (argv.at(1) == fflag)
                   {
                         f = true;
                   }
