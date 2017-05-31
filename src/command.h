@@ -68,12 +68,14 @@ class Command: public Connector
           if (execvp(argv[0], argv.data()) == -1){// runs command
             perror("execvp");
             this->executed = false;
+            exit(1);
           }
         }
         if (pid > 0){//parent
           if (wait(0) == -1){
             perror("wait");
             this->executed = false;
+            exit(1);
           }
         }
         //memory management
