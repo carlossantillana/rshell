@@ -60,7 +60,6 @@ vector<char *> Execution::str_to_char(vector<RShell*> vec){
         char *tmp;
         tmp = new char[vec[i]->get_type().size() + 1];
         memcpy(tmp, vec[i]->get_type().c_str(), vec[i]->get_type().size() + 1);
-
         vectChar.push_back(tmp);
     }
     return vectChar;

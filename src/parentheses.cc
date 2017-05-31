@@ -31,6 +31,16 @@ Parentheses::Parentheses(vector<RShell*> c) //Constructor
 {}
 
 Parentheses::~Parentheses(){
+	for (vector<RShell* >::iterator iter = tree.begin() ; iter != tree.end(); ++iter)
+	{
+		delete (*iter);
+	}
+	tree.clear();
+	for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
+	{
+		delete (*iter);
+	}
+	commandList.clear();
 	delete left;
 	delete right;
 }
@@ -106,6 +116,12 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
         commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
       firstCommand = false;
   }
+	//memory management
+	for (vector<RShell* >::iterator iter = children.begin() ; iter != children.end(); ++iter)
+	{
+		delete (*iter);
+	}
+	children.clear();
   make_tree();
 }
 

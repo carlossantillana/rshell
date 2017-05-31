@@ -46,6 +46,8 @@ class Command: public Connector
           delete (*iter);
         }
         command.clear();
+        delete left;
+        delete right;
       }
     virtual bool execute() //Returns true if command exists
     {
