@@ -48,7 +48,7 @@ class Test: public RShell
 	        if (argv.size() == 0)
 	        {
 		          cout << "(False)" << endl;
-		          return executed = false;
+		          return false;
 	        }
           else if (argv.at(0) == test)
 	        {
@@ -76,7 +76,7 @@ class Test: public RShell
 		          else
 		          {
 			              cout << "(False)" << endl;
-			              return executed = false;
+			              return false;
 		          }
 	        }
           else if(argv.at(0) == bracket)
@@ -105,7 +105,7 @@ class Test: public RShell
              else
              {
                   cout << "(False)" << endl;
-                  return executed = false;
+                  return false;
              }
            }
 
@@ -136,7 +136,7 @@ class Test: public RShell
              }
            }
            cout << "(False)\n";
-           return executed = false;
+           return false;
         }
         string get_type() //Returns type for rshell comparisons
         {
