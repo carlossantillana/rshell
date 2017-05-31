@@ -18,10 +18,12 @@ class Test: public RShell
         string type;// Test and arguement list
         string input;
         bool e,f,d;
+        bool executed;//determines if was already executed
+        bool exec;// determines whether or not to execute
     public:
-        Test(string in) : type("test"), input(in), e(false), f(false), d(false) {}
+        Test(string in) : type("test"), input(in), e(false), f(false), d(false), executed(false), exec(true) {}
         //Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
-        Test(RShell* i, string in) :child(i), type("test"), input(in), e(false), f(false), d(false) {} //Sets string variable to "test"
+        Test(RShell* i, string in) :child(i), type("test"), input(in), e(false), f(false), d(false), executed(false), exec(true) {} //Sets string variable to "test"
         ~Test()
         {
           for (vector<RShell* >::iterator iter = commandList.begin(); iter != commandList.end(); ++iter)
@@ -36,6 +38,7 @@ class Test: public RShell
         // }
         bool execute() //Returns true if Test runs otherwise fails
         {
+          this->executed = true;
           //cout << "HELP\n" << flush;
           commandList = child->get_commandList();
           char* c;
@@ -56,7 +59,7 @@ class Test: public RShell
 	         if (argv.size() == 0)
 	         {
 		           cout << "(False)" << endl;
-		           return false;
+		           return executed = false;
 	         }
            else if (argv.at(0) == test)
 	         {
@@ -84,7 +87,7 @@ class Test: public RShell
 		           else
 		           {
 			              cout << "(False)" << endl;
-			              return false;
+			              return executed = false;
 		           }
 	         }
            else if(argv.at(0) == bracket)
@@ -113,7 +116,7 @@ class Test: public RShell
              else
              {
                   cout << "(False)" << endl;
-                  return false;
+                  return executed = false;
              }
            }
 
@@ -124,7 +127,7 @@ class Test: public RShell
              if (S_ISDIR(sb.st_mode) || S_ISREG(sb.st_mode))
              {
                cout << "(True)\n";
-               return true;
+               return executed = true;
              }
            }
            else if (f)
@@ -132,7 +135,7 @@ class Test: public RShell
              if (S_ISREG(sb.st_mode))
              {
                cout << "(True)\n";
-               return true;
+               return executed = true;
              }
            }
            else if (d)
@@ -140,11 +143,11 @@ class Test: public RShell
              if (S_ISDIR(sb.st_mode))
              {
                cout << "(True)\n";
-               return true;
+               return executed = true;
              }
            }
            cout << "(False)\n";
-           return false;
+           return executed = false;
         }
         string get_type() //Returns type for rshell comparisons
         {
@@ -167,6 +170,8 @@ class Test: public RShell
         RShell* get_left(){return commandList.at(0);}
         RShell* get_right(){return commandList.at(0);}
       	string get_input(){return input;}
+        bool get_executed() {return this->executed;}
+        void set_exec(bool e){this->exec = e;}
 };
 
 

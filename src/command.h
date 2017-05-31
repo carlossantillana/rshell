@@ -12,6 +12,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <cstring>
+#include "test.h"
 class Command: public Connector
 {
     private:
@@ -53,6 +54,13 @@ class Command: public Connector
         return executed = false;
       }
       if (exec == true){
+        if(command.at(0)->get_type() == "test"){
+            Test* testing = new Test(this, "test");
+            testing->execute();
+            this->executed = testing->get_executed();
+            return executed;
+        }
+
         vector<char *> argv = str_to_char(command);//converts vect of string to vect of char* for execvp
         argv.push_back(NULL);
         pid = fork();

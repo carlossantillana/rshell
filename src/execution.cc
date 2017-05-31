@@ -245,6 +245,7 @@ bool Execution::execute(){return execute(tree);}
 
 bool Execution::execute(vector<RShell*> tree)
 {
+  //cout << "tree size " << tree.size() << endl;
   if (tree.size() == 0)//allows for single command
   {
     return false;
@@ -252,6 +253,7 @@ bool Execution::execute(vector<RShell*> tree)
   bool ret_val = true;
 
   for (unsigned int i =0; i < tree.size(); i++){
+    //cout << tree.at(i)->get_type() << endl;
     ret_val = tree.at(i)->execute();//executes tree
   }
   return ret_val;
@@ -297,47 +299,46 @@ void  Execution::prep_tree(){
             child = new Command(children);
           else
             child = new Command(children, tree.back());//makes Rshell command object to put into connector
-
           tree.push_back(child);
       }
         if (commandList.front()->get_type() == "&&"){
-          if (!children.empty() && children.front()->get_type() == "test")
-          {
-            Test* testing = new Test(tree.back(), children.front()->get_input());
-            And* anding = new And(testing);
-            tree.push_back(anding);
-          }
-          else
-          {
+          // if (!children.empty() && children.front()->get_type() == "test")
+          // {
+          //   Test* testing = new Test(tree.back(), children.front()->get_input());
+          //   And* anding = new And(testing);
+          //   tree.push_back(anding);
+          // }
+          // else
+          // {
             And* anding = new And(tree.back());
             tree.push_back(anding);
-          }
+          //}
         }
         else if(commandList.front()->get_type() == "||"){
-          if (!children.empty() && children.front()->get_type() == "test")
-          {
-            Test* testing = new Test(tree.back(), children.front()->get_input());
-            Or* oring = new Or(testing);
-            tree.push_back(oring);
-          }
-          else
-          {
+          // if (!children.empty() && children.front()->get_type() == "test")
+          // {
+          //   Test* testing = new Test(tree.back(), children.front()->get_input());
+          //   Or* oring = new Or(testing);
+          //   tree.push_back(oring);
+          // }
+          // else
+          // {
               Or* oring = new Or(tree.back());
               tree.push_back(oring);
-          }
+        //  }
         }
         else if(commandList.front()->get_type() == ";"){
-          if (!children.empty() && children.front()->get_type() == "test")
-          {
-            Test* testing = new Test(tree.back(), children.front()->get_input());
-            Semicolon* semying = new Semicolon(testing);
-            tree.push_back(semying);
-          }
-          else
-          {
+          // if (!children.empty() && children.front()->get_type() == "test")
+          // {
+          //   Test* testing = new Test(tree.back(), children.front()->get_input());
+          //   Semicolon* semying = new Semicolon(testing);
+          //   tree.push_back(semying);
+          // }
+          // else
+          // {
             Semicolon* semying = new Semicolon(tree.back());
             tree.push_back(semying);
-          }
+          //}
         }
         //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
@@ -346,12 +347,12 @@ void  Execution::prep_tree(){
           commandList = parentheses->get_commands();//updates command list
           tree.push_back(parentheses);
         }
-        else if (!children.empty() && children.front()->get_type() == "test")
-        {
-          //cout << children.front()->get_input();
-          Test* testing = new Test(tree.back(), children.front()->get_input());
-          tree.push_back(testing);
-        }
+        // else if (commandList.front()->get_type() == "test")
+        // {
+        //   cout << children.front()->get_input() << endl;
+        //   Test* testing = new Test(tree.back(), children.front()->get_input());
+        //   tree.push_back(testing);
+        // }
         children.clear();
         if (commandList.size() >= 1 ){//probably going to run into issue with parentheses here.
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
