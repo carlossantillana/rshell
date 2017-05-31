@@ -80,43 +80,43 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
 				tree.push_back(child);
 		}
 		if (commandList.front()->get_type() == "&&"){
-			if (!children.empty() && children.front()->get_type() == "test")
-			{
-				Test* testing = new Test(tree.back(), children.front()->get_input());
-				And* anding = new And(testing);
-				tree.push_back(anding);
-			}
-			else
-			{
+			// if (!children.empty() && children.front()->get_type() == "test")
+			// {
+			// 	Test* testing = new Test(tree.back(), children.front()->get_input());
+			// 	And* anding = new And(testing);
+			// 	tree.push_back(anding);
+			// }
+			// else
+			// {
 				And* anding = new And(tree.back());
 				tree.push_back(anding);
-			}
+		//	}
 		}
 		else if(commandList.front()->get_type() == "||"){
-			if (!children.empty() && children.front()->get_type() == "test")
-			{
-				Test* testing = new Test(tree.back(), children.front()->get_input());
-				Or* oring = new Or(testing);
-				tree.push_back(oring);
-			}
-			else
-			{
+			// if (!children.empty() && children.front()->get_type() == "test")
+			// {
+			// 	Test* testing = new Test(tree.back(), children.front()->get_input());
+			// 	Or* oring = new Or(testing);
+			// 	tree.push_back(oring);
+			// }
+			// else
+			// {
 					Or* oring = new Or(tree.back());
 					tree.push_back(oring);
-			}
+			//}
 		}
 		else if(commandList.front()->get_type() == ";"){
-			if (!children.empty() && children.front()->get_type() == "test")
-			{
-				Test* testing = new Test(tree.back(), children.front()->get_input());
-				Semicolon* semying = new Semicolon(testing);
-				tree.push_back(semying);
-			}
-			else
-			{
+			// if (!children.empty() && children.front()->get_type() == "test")
+			// {
+			// 	Test* testing = new Test(tree.back(), children.front()->get_input());
+			// 	Semicolon* semying = new Semicolon(testing);
+			// 	tree.push_back(semying);
+			// }
+			// else
+			// {
 				Semicolon* semying = new Semicolon(tree.back());
 				tree.push_back(semying);
-			}
+		//	}
 		}
 		//we can safely assume all parentheses have matching pair by now.
 		else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
@@ -125,11 +125,11 @@ void Parentheses::fill_parentheses(){//fills up Parentheses with commands
 			commandList = parentheses->get_commands();//updates command list
 			tree.push_back(parentheses);
 		}
-		else if (!children.empty() && children.front()->get_type() == "test")
-		{
-			Test* testing = new Test(tree.back(), children.front()->get_input());
-			tree.push_back(testing);
-		}
+		// else if (!children.empty() && children.front()->get_type() == "test")
+		// {
+		// 	Test* testing = new Test(tree.back(), children.front()->get_input());
+		// 	tree.push_back(testing);
+		// }
       children.clear();
       if (commandList.size() >= 1 && commandList.front()->get_input() != "right")
         commandList.erase(commandList.begin(), commandList.begin() + 1);//erases up to connector
