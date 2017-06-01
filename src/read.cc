@@ -9,6 +9,7 @@
 #include "command.h"
 #include "test.h"
 #include "parentheses.h"
+
 using namespace boost;
 
 Read::Read(): foundExit(false), firstExit(false), foundTest(false), foundParenthesis(false), invalidParentheses(false) {}

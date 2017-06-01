@@ -40,3 +40,4 @@ $
 
 Bugs:
 1. git commit -m "Comment here" - Can only have one word written within quotes
+2. Semicolons backwards IE: )ls && echo A( -Causes seg. fault
