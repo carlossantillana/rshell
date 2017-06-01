@@ -1,3 +1,0 @@
-echo A
-echo B && #exit
-exit
