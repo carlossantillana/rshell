@@ -28,6 +28,7 @@ void Read::par(){
   string tmp;
   unsigned int count =0;
   unsigned int leftParenthesesCounter = 0, rightParenthesesCounter = 0;
+  unsigned int checkEmpty =0;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
     boost::char_separator<char> sep(" ","#;[]()");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
@@ -54,11 +55,19 @@ void Read::par(){
           commandList.push_back(oring);
         }
         else if (tmp == "("){
+          checkEmpty=0;
           leftParenthesesCounter++;
           Parentheses* parentheses = new Parentheses("left");
           commandList.push_back(parentheses);// pushes back a left parentheses
         }
         else if (tmp == ")"){
+          if (checkEmpty == 1){
+            break;
+          }
+          if (count ==0){
+            cout << "bash: syntax error near unexpected token )\n";
+            break;
+          }
           rightParenthesesCounter++;
           Parentheses* parentheses = new Parentheses("right");
           commandList.push_back(parentheses);// pushes back a right parentheses
@@ -75,6 +84,7 @@ void Read::par(){
           commandList.push_back(parse);//pushes string to vector
         }
         count++;
+        checkEmpty++;
   }
   if (leftParenthesesCounter != rightParenthesesCounter){
     invalidParentheses = true;// if invalid number of parentheses return strue
