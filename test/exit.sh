@@ -1,4 +1,4 @@
 #!/bin/sh
 
 #!/bin/sh
-../bin/rshell < exit.txt
+../bin/rshell < 2_exit_test

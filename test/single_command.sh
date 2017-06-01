@@ -1,2 +1,2 @@
 #!/bin/sh
-../bin/rshell < single.txt
+../bin/rshell < 4_single_command_test

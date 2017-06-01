@@ -39,5 +39,4 @@ D
 $
 
 Bugs:
-1. Multiple exits required occasionally
-2. If || is the second connector it will act as &&
+1. git commit -m "Comment here" - Can only have one word written within quotes

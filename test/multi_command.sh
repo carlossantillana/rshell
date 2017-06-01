@@ -1,3 +1,3 @@
 #!/bin/sh
 
-../bin/rshell < multi.txt
+../bin/rshell < 3_multiple_commands_test

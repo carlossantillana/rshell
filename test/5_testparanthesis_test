@@ -1,0 +1,8 @@
+test -e exit.sh && echo B
+test -f multi_command.sh || echo B
+test -d exit.sh; test -f exit.sh
+((ls && echo A) || (test exit.sh; ls))
+((([exit.sh] && echo A) ; echo b) && (echo c || echo d)) #&& echo "test failed"
+(ls -j && echo A) || echo B
+((((([exit.sh] && echo A) ; echo b) && (echo c || echo d)) && echo "test passed") && echo e) ; echo f #Test passed if this doesn't show
+exit

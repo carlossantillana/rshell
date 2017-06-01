@@ -1,3 +1,3 @@
 #!/bin/sh
 
-../bin/rshell < comment.txt
+../bin/rshell < 1_commented_command_test

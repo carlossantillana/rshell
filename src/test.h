@@ -15,14 +15,13 @@ class Test: public RShell
     private:
         vector<RShell*> commandList;
         RShell* child;
-        string type;// Test and arguement list
-        string input;
-        bool e,f,d;
+        string type; //Returns "type"
+        string input; //Returns actual input
+        bool e,f,d; //Flags
         bool executed;//determines if was already executed
         bool exec;// determines whether or not to execute
     public:
         Test(string in) : type("test"), input(in), e(false), f(false), d(false), executed(false), exec(true) {}
-        //Test(vector<RShell*> i) :commandList(i), type("test"), e(false), f(false), d(false) {} //Sets string variable to "test"
         Test(RShell* i, string in) :child(i), type("test"), input(in), e(false), f(false), d(false), executed(false), exec(true) {} //Sets string variable to "test"
         ~Test()
         {
@@ -50,9 +49,9 @@ class Test: public RShell
 		          cout << "(False)" << endl;
 		          return false;
 	        }
-          else if (argv.at(0) == test)
+          else if (argv.at(0) == test) //If user wrote "test"
 	        {
-		          if (argv.size() == 3)
+		          if (argv.size() == 3) //If user specified a flag
 		          {
 			              c = argv.at(2);
 			              if (argv.at(1) == eflag)
@@ -68,7 +67,7 @@ class Test: public RShell
 				                  d = true;
 			              }
 		          }
-		          else if (argv.size() == 2)
+		          else if (argv.size() == 2) //Default flag is -e
 		          {
 			              c = argv.at(1);
 			              e = true;
@@ -79,9 +78,9 @@ class Test: public RShell
 			              return false;
 		          }
 	        }
-          else if(argv.at(0) == bracket)
+          else if(argv.at(0) == bracket) //User input brackets
           {
-            if (argv.size() == 4)
+            if (argv.size() == 4) //User specified a flag
             {
               c = argv.at(2);
               if (argv.at(1) == eflag)
@@ -97,7 +96,7 @@ class Test: public RShell
                         d = true;
                   }
              }
-             else if (argv.size() == 3)
+             else if (argv.size() == 3) //Default flag is -e
              {
                   c = argv.at(1);
                   e = true;
@@ -135,8 +134,8 @@ class Test: public RShell
                return executed = true;
              }
            }
-           cout << "(False)\n";
-           return false;
+           cout << "(False)\n"; //Should still return true signifying that the test happened
+           return true;
         }
         string get_type() //Returns type for rshell comparisons
         {
