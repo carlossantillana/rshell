@@ -9,6 +9,7 @@
 #include "command.h"
 #include "test.h"
 #include "parentheses.h"
+#include "pipe.h"
 
 using namespace boost;
 

@@ -13,7 +13,7 @@
 #include "semicolon.h"
 #include "parentheses.h"
 #include "test.h"
-
+#include "pipe.h"
 
 Execution::~Execution() {
     for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -100,6 +100,7 @@ void  Execution::prep_tree(){
         }
         else if(commandList.front()->get_type() == "|"){
             Pipe* piping = new Pipe(tree.back());
+            tree.back()->set_exec(false);//prevents left child from executing
             tree.push_back(piping);
         }
         //we can safely assume all parentheses have matching pair by now.
@@ -110,7 +111,7 @@ void  Execution::prep_tree(){
           tree.push_back(parentheses);
         }
         children.clear();
-        if (commandList.size() >= 1 ){//probably going to run into issue with parentheses here.
+        if (commandList.size() >= 1 ){
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
         }
         firstCommand = false;

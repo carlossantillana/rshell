@@ -17,10 +17,10 @@ private:
 	string type; //Sets type of child
 	bool executed;//determines if was already executed
 	bool exec;// determines whether or not to execute
-  pid_t pid;
-  int myPipe[2];
-  int ret;
-  char buf[20];
+	pid_t pid;
+	int pipefd[2];
+	int myPipe;
+	char buf[20];
 public:
 	Pipe()  //Default Constructor
 	: type("|"), executed(false), exec(true)
@@ -35,8 +35,9 @@ public:
 	bool execute() //Returns true if one argument is true
 	{
     this->executed = true;
-    ret = pipe(myPipe);
-    if (ret == -1){
+	right->set_exec(false);
+    myPipe = pipe(pipefd);
+    if (myPipe == -1){
       perror("pipe");
           this->executed = false;
       exit(1);
@@ -44,13 +45,16 @@ public:
     }
     pid = fork();
     if (pid == 0){
-      write(myPipe[1], "testing", 7);
-
+		close(pipefd[0]);
+		write(pipefd[1], "testing", 7);
+		close(pipefd[0]);
+		exit(0);
     }
     else {
-      printf("Parent Process\n");
-      read(myPipe[0], buf, 15);
-      printf("buf: %s\n", buf );
+		printf("Parent Process\n");
+		//close(pipefd[0]);
+		read(pipefd[0], buf, 15);
+		printf("buf: %s\n", buf );
     }
     /*
 		bool executed = true;
@@ -59,9 +63,9 @@ public:
 			right->set_exec(true);
 		}
 		else
-			right->set_exec(false);
+			right->set_exec(false);    */
 		return executed;
-    */
+
 	}
 
 	string get_type()
