@@ -71,7 +71,7 @@ void  Execution::prep_tree(){
     bool firstCommand = true;
 
     while (!commandList.empty()){
-        while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
+        while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()"&& commandList.at(i)->get_type() != "|")
 
         {//fills left child
           children.push_back(commandList.at(i));
@@ -97,6 +97,10 @@ void  Execution::prep_tree(){
         else if(commandList.front()->get_type() == ";"){
             Semicolon* semying = new Semicolon(tree.back());
             tree.push_back(semying);
+        }
+        else if(commandList.front()->get_type() == "|"){
+            Pipe* piping = new Pipe(tree.back());
+            tree.push_back(piping);
         }
         //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
