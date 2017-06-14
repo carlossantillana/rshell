@@ -1,5 +1,5 @@
 touch test && ls
-echo Hello! > test l&& cat < test
+echo Hello! > test && cat < test
 echo My name is Elder Price > test && cat < test
 echo And I would like to share with you > test && cat < test
 echo The most amazing book!  > test && cat < test
