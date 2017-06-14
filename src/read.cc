@@ -31,7 +31,7 @@ void Read::par(){
   unsigned int leftParenthesesCounter = 0, rightParenthesesCounter = 0;
   unsigned int checkEmpty =0;
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-    boost::char_separator<char> sep(" ","#;[]()|");//list of delimiters to check
+    boost::char_separator<char> sep(" ","#;[]()");//list of delimiters to check
     tokenizer tokens(input, sep);//parses string to tokens
     for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter){
         //Itereates through tokens and puts them into vector

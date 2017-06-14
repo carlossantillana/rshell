@@ -97,6 +97,12 @@ class Command: public Connector
     {
       return type;
     }
+    void print_commands() //Returns type for rshell comparisons
+    {
+      for(unsigned int i=0; i < command.size(); i++){
+          cout << command.at(i)->get_input() << endl;
+      }
+    }
     void add_command(RShell* r){
       command.push_back(r);
     }

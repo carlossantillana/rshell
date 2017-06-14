@@ -20,7 +20,6 @@ private:
 	pid_t pid;
 	int pipefd[2];
 	int myPipe;
-	char buf[20];
 public:
 	Pipe()  //Default Constructor
 	: type("|"), executed(false), exec(true)
@@ -32,42 +31,72 @@ public:
 		delete left;
 		delete right;
 	}
+
 	bool execute() //Returns true if one argument is true
 	{
-    this->executed = true;
-	right->set_exec(false);
-    myPipe = pipe(pipefd);
-    if (myPipe == -1){
-      perror("pipe");
-          this->executed = false;
-      exit(1);
+	cout << "inside pipe\n";
+	this->executed = true;
+	vector<RShell*> lCommandList = left->get_commandList(), rCommandList = right->get_commandList();
+	vector<char *> largv = str_to_char(lCommandList);//converts vect of string to vect of char* for execvp
+	vector<char *> rargv = str_to_char(rCommandList);//converts vect of string to vect of char* for execvp
+	largv.push_back(NULL);
+	rargv.push_back(NULL);
+	int pipefd[2];
+	   pipe(pipefd);
+	   switch (pid = fork()) {
 
-    }
-    pid = fork();
-    if (pid == 0){
-		close(pipefd[0]);
-		write(pipefd[1], "testing", 7);
-		close(pipefd[0]);
-		exit(0);
-    }
-    else {
-		printf("Parent Process\n");
-		//close(pipefd[0]);
-		read(pipefd[0], buf, 15);
-		printf("buf: %s\n", buf );
-    }
-    /*
-		bool executed = true;
-		if(!left->get_executed())
-		{
-			right->set_exec(true);
-		}
-		else
-			right->set_exec(false);    */
-		return executed;
+	   	case 0:
+	   		dup2(pipefd[1], 1);
+	   		close(pipefd[0]);
+	   		execvp(largv[0], largv.data());
+	   		perror(largv[0]);
+			break;
 
+	   	case -1:
+	   		perror("fork");
+	   		exit(1);
+			break;
+
+		default:
+			break;
+   	}
+
+	switch (pid = fork()) {
+
+	case 0:
+		dup2(pipefd[0], 0);
+		close(pipefd[1]);
+		execvp(rargv[0], rargv.data());
+		perror(rargv[0]);
+		break;
+
+	case -1:
+		perror("fork");
+		exit(1);
+		break;
+
+	default:
+		break;
 	}
 
+	close(pipefd[0]); close(pipefd[1]);
+   right->set_exec(false);
+
+	return executed;
+	}
+
+	vector<char *> str_to_char(vector<RShell*> vec){
+        vector<char *> vectChar;
+
+        for(unsigned int  i = 0; i < vec.size(); ++i){
+            char *tmp;
+            tmp = new char[vec[i]->get_input().size() + 1];
+            memcpy(tmp, vec[i]->get_input().c_str(), vec[i]->get_input().size() + 1);
+
+            vectChar.push_back(tmp);
+        }
+        return vectChar;
+    }
 	string get_type()
 	{
 		return type;
