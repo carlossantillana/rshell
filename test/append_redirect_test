@@ -1,0 +1,7 @@
+touch test && ls
+echo Hello! > test && cat test
+echo My name is Elder Grant >> test && cat test
+echo It's a book about America >> test && cat test
+echo A long, long time ago >> test && cat test
+rm test && ls
+exit
