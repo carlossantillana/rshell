@@ -32,7 +32,8 @@ public:
     }
     virtual bool get_executed(){return executed;}
     virtual void set_exec(bool e){exec = e;}
-  };
+    virtual bool piping(){return false;}
+};
 
 
 #endif

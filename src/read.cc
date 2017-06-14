@@ -9,6 +9,7 @@
 #include "command.h"
 #include "test.h"
 #include "parentheses.h"
+#include "pipe.h"
 
 using namespace boost;
 
@@ -71,6 +72,10 @@ void Read::par(){
           rightParenthesesCounter++;
           Parentheses* parentheses = new Parentheses("right");
           commandList.push_back(parentheses);// pushes back a right parentheses
+        }
+        else if (tmp == "|"){
+          Pipe* piping = new Pipe();
+          commandList.push_back(piping);
         }
         else {
           if (tmp == "exit"){

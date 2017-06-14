@@ -13,7 +13,7 @@
 #include "semicolon.h"
 #include "parentheses.h"
 #include "test.h"
-
+#include "pipe.h"
 
 Execution::~Execution() {
     for (vector<RShell* >::iterator iter = commandList.begin() ; iter != commandList.end(); ++iter)
@@ -71,7 +71,7 @@ void  Execution::prep_tree(){
     bool firstCommand = true;
 
     while (!commandList.empty()){
-        while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()")
+        while(i < commandList.size() && !commandList.empty() && commandList.at(i)->get_type() != "&&" && commandList.at(i)->get_type() != "||" && commandList.at(i)->get_type() != ";" && commandList.at(i)->get_type() != "()"&& commandList.at(i)->get_type() != "|")
 
         {//fills left child
           children.push_back(commandList.at(i));
@@ -98,6 +98,11 @@ void  Execution::prep_tree(){
             Semicolon* semying = new Semicolon(tree.back());
             tree.push_back(semying);
         }
+        else if(commandList.front()->get_type() == "|"){
+            Pipe* piping = new Pipe(tree.back());
+            tree.back()->set_exec(false);//prevents left child from executing
+            tree.push_back(piping);
+        }
         //we can safely assume all parentheses have matching pair by now.
         else if(commandList.front()->get_type() == "()" && commandList.front()->get_input() == "left"){
           Parentheses* parentheses = new Parentheses(commandList);
@@ -106,7 +111,7 @@ void  Execution::prep_tree(){
           tree.push_back(parentheses);
         }
         children.clear();
-        if (commandList.size() >= 1 ){//probably going to run into issue with parentheses here.
+        if (commandList.size() >= 1 ){
           commandList.erase(commandList.begin(), commandList.begin() + 1);//erases connector
         }
         firstCommand = false;
