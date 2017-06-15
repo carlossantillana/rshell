@@ -39,5 +39,7 @@ D
 $
 
 Bugs:
-1. git commit -m "Comment here" - Can only have one word written within quotes
-2. backwards semicolons ")(" do not produce error message if not the first command
+1. Git commit -m "Comment here" - Can only have one word written within quotes
+2. Backwards semicolons ")(" do not produce error message if not the first command
+3. After calling pipe the dollar sign prompt disappears, however; it still executes commands as it should.
+4. The command "tee" does not work

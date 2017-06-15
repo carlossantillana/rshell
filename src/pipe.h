@@ -34,7 +34,6 @@ public:
 
 	bool execute() //Returns true if one argument is true
 	{
-	cout << "inside pipe\n";
 	this->executed = true;
 	vector<RShell*> lCommandList = left->get_commandList(), rCommandList = right->get_commandList();
 	vector<char *> largv = str_to_char(lCommandList);//converts vect of string to vect of char* for execvp
@@ -42,43 +41,31 @@ public:
 	largv.push_back(NULL);
 	rargv.push_back(NULL);
 	int pipefd[2];
-	   pipe(pipefd);
-	   switch (pid = fork()) {
+	pipe(pipefd);
+	pid = fork();
+	if (pid == 0){
+		dup2(pipefd[1], 1);
+		close(pipefd[0]);
+		execvp(largv[0], largv.data());
+		perror(largv[0]);
+	}
+	else if (pid == -1){
+		perror("fork");
+		exit(1);
+	}
+	pid = fork();
 
-	   	case 0:
-	   		dup2(pipefd[1], 1);
-	   		close(pipefd[0]);
-	   		execvp(largv[0], largv.data());
-	   		perror(largv[0]);
-			break;
-
-	   	case -1:
-	   		perror("fork");
-	   		exit(1);
-			break;
-
-		default:
-			break;
-   	}
-
-	switch (pid = fork()) {
-
-	case 0:
+	if (pid == 0){
 		dup2(pipefd[0], 0);
 		close(pipefd[1]);
 		execvp(rargv[0], rargv.data());
 		perror(rargv[0]);
-		break;
-
-	case -1:
-		perror("fork");
-		exit(1);
-		break;
-
-	default:
-		break;
 	}
 
+	else if (pid == -1){
+		perror("fork");
+		exit(1);
+	}
 	close(pipefd[0]); close(pipefd[1]);
    right->set_exec(false);
 
